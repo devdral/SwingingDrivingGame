@@ -1,0 +1,14 @@
+[gd_scene load_steps=4 format=3 uid="uid://c0ejr5ajxt1jw"]
+
+[ext_resource type="Script" uid="uid://bmpjc8f2lmi7i" path="res://scripts/TerrainSystem/Terrain.cs" id="1_b0j75"]
+[ext_resource type="Resource" uid="uid://d2a8c2w2p0f0g" path="res://scripts/TerrainSystem/LayerResources/testperlin.tres" id="2_oqplg"]
+[ext_resource type="Script" uid="uid://btn8i0m76hx2y" path="res://scripts/Camera/debug_camera_controller.gd" id="3_vjhlg"]
+
+[node name="Terrain" type="Node3D"]
+script = ExtResource("1_b0j75")
+Layers = [ExtResource("2_oqplg")]
+Generate = true
+
+[node name="Camera3D" type="Camera3D" parent="."]
+transform = Transform3D(-0.674985, 0, -0.737831, 0, 1, 0, 0.737831, 0, -0.674985, 0, 6.79342, 0)
+script = ExtResource("3_vjhlg")
