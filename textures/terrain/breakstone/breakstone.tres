@@ -1,0 +1,13 @@
+[gd_resource type="Resource" script_class="TerrainMaterial" load_steps=5 format=3 uid="uid://de48c7nhx481a"]
+
+[ext_resource type="Script" uid="uid://whxmqru5paw7" path="res://scripts/TerrainSystem/TerrainMaterial.cs" id="1_crvoq"]
+[ext_resource type="Texture2D" uid="uid://hrq5o27nadov" path="res://textures/terrain/breakstone/T_breakstone_basecolor.png" id="1_h4ltk"]
+[ext_resource type="Texture2D" uid="uid://cy7cmvhhpg15n" path="res://textures/terrain/breakstone/T_breakstone_normal.png" id="2_wxx2r"]
+[ext_resource type="Texture2D" uid="uid://1j1rg5105tqf" path="res://textures/terrain/breakstone/T_breakstone_roughness.png" id="3_qeodo"]
+
+[resource]
+script = ExtResource("1_crvoq")
+AlbedoTexture = ExtResource("1_h4ltk")
+NormalTexture = ExtResource("2_wxx2r")
+RoughnessTexture = ExtResource("3_qeodo")
+metadata/_custom_type_script = "uid://whxmqru5paw7"

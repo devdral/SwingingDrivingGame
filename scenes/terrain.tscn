@@ -1,14 +1,28 @@
-[gd_scene load_steps=4 format=3 uid="uid://c0ejr5ajxt1jw"]
+[gd_scene load_steps=7 format=3 uid="uid://c0ejr5ajxt1jw"]
 
 [ext_resource type="Script" uid="uid://bmpjc8f2lmi7i" path="res://scripts/TerrainSystem/Terrain.cs" id="1_b0j75"]
 [ext_resource type="Resource" uid="uid://d2a8c2w2p0f0g" path="res://scripts/TerrainSystem/LayerResources/testperlin.tres" id="2_oqplg"]
 [ext_resource type="Script" uid="uid://btn8i0m76hx2y" path="res://scripts/Camera/debug_camera_controller.gd" id="3_vjhlg"]
+[ext_resource type="Shader" uid="uid://cm6ackjec7sw7" path="res://shaders/terrain.gdshader" id="4_a0ket"]
+[ext_resource type="Resource" uid="uid://de48c7nhx481a" path="res://textures/terrain/breakstone/breakstone.tres" id="4_tw12r"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_l86fn"]
+render_priority = 0
+shader = ExtResource("4_a0ket")
+shader_parameter/albedo_textures = null
+shader_parameter/normal_textures = null
+shader_parameter/roughness_textures = null
 
 [node name="Terrain" type="Node3D"]
 script = ExtResource("1_b0j75")
 Layers = [ExtResource("2_oqplg")]
+SplatmapMaterial = SubResource("ShaderMaterial_l86fn")
+Materials = [ExtResource("4_tw12r"), null, null, null]
 Generate = true
 
 [node name="Camera3D" type="Camera3D" parent="."]
 transform = Transform3D(-0.674985, 0, -0.737831, 0, 1, 0, 0.737831, 0, -0.674985, 0, 6.79342, 0)
 script = ExtResource("3_vjhlg")
+
+[node name="DirectionalLight3D" type="DirectionalLight3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 0.559222, 0.829018, 0, -0.829018, 0.559222, 0, 0, 0)
