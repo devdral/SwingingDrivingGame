@@ -43,8 +43,6 @@ public partial class Car : CharacterBody3D
             GD.Print("BK");
         }
         
-        var twoDVelocity = new Vector2(newVel.X, newVel.Y);
-        
         // Limit vector length on the XZ plane to limit "speed" on that plane
         if (MathF.Abs(_currentSpeed) > MaxSpeed)
         {
@@ -69,7 +67,7 @@ public partial class Car : CharacterBody3D
         }
         
         Vector2 baseVector = Vector2.Up.Rotated(-Rotation.Y);
-        twoDVelocity = baseVector * _currentSpeed;
+        var twoDVelocity = baseVector * _currentSpeed;
         
         newVel.X = twoDVelocity.X;
         newVel.Z = twoDVelocity.Y;
