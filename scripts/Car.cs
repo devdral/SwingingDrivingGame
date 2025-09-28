@@ -12,79 +12,84 @@ public partial class Car : CharacterBody3D
     [Export] public float MaxSpeed { get; set; } = 1500;
     [Export] public float Deceleration { get; set; } = 250;
 
+    private float _wheelRotation;
+    private float _currentSpeed;
+    
+    public float CurrentSpeed => _currentSpeed;
+
     public override void _PhysicsProcess(double delta)
     {
-        var newVel = Velocity;
+        var newVel = new Vector3
+        {
+            Y = Velocity.Y
+        };
+        if (Math.Abs(_wheelRotation) > 0)
+        {
+            Rotation = Rotation with { Y = Rotation.Y + _wheelRotation };
+            _wheelRotation = 0;
+        }
 
         newVel.Y -= Gravity * (float)delta;
         newVel.Y = float.Clamp(newVel.Y, -MaxYVelocity, MaxYVelocity);
         
         if (Input.IsActionPressed("forward"))
         {
-            Quaternion rotQuat = Quaternion.FromEuler(Rotation);
-            Vector3 baseVector;
-            if (Rotation == Vector3.Zero)
-            {
-                baseVector = Vector3.Forward;
-            }
-            else
-            {
-                baseVector = Vector3.Forward.Rotated(rotQuat.GetAxis().Normalized(), rotQuat.GetAngle());
-            }
-            newVel += baseVector * Speed * (float)delta;
+            _currentSpeed += Speed * (float)delta;
+            GD.Print("FD");
         }
         else if (Input.IsActionPressed("back"))
         {
-            Quaternion rotQuat = Quaternion.FromEuler(Rotation);
-            Vector3 baseVector;
-            if (Rotation == Vector3.Zero)
-            {
-                baseVector = Vector3.Forward;
-            }
-            else
-            {
-                baseVector = Vector3.Forward.Rotated(rotQuat.GetAxis().Normalized(), rotQuat.GetAngle());
-            }
-            newVel -= baseVector * Speed * (float)delta;
+            _currentSpeed -= Speed * (float)delta;
+            GD.Print("BK");
         }
+        
+        var twoDVelocity = new Vector2(newVel.X, newVel.Y);
         
         // Limit vector length on the XZ plane to limit "speed" on that plane
-        var twoDVelocity = new Vector2(newVel.X, newVel.Z);
-        float currentSpeed = twoDVelocity.Length();
-        if (MathF.Abs(currentSpeed) > MaxSpeed)
+        if (MathF.Abs(_currentSpeed) > MaxSpeed)
         {
-            twoDVelocity = twoDVelocity.Normalized() * MaxSpeed;
-            currentSpeed = MaxSpeed;
+            _currentSpeed = MaxSpeed;
         }
 
-        if (currentSpeed > 0)
+        if (_currentSpeed > 0)
         {
-            currentSpeed -= Deceleration * (float)delta;
+            if (_currentSpeed < Deceleration * (float)delta)
+            {
+                _currentSpeed = 0;
+            }
+            _currentSpeed -= Deceleration * (float)delta;
         }
-        else if (currentSpeed < 0)
+        else if (_currentSpeed < 0)
         {
-            currentSpeed += Deceleration * (float)delta;
+            if (_currentSpeed > -(Deceleration * (float)delta))
+            {
+                _currentSpeed = 0;
+            }
+            _currentSpeed += Deceleration * (float)delta;
         }
         
-        twoDVelocity = twoDVelocity.Normalized() * currentSpeed;
+        Vector2 baseVector = Vector2.Up.Rotated(-Rotation.Y);
+        twoDVelocity = baseVector * _currentSpeed;
+        
         newVel.X = twoDVelocity.X;
         newVel.Z = twoDVelocity.Y;
         
-
-        var wheelRotation = 0f;
         if (Input.IsActionPressed("left"))
         {
-            wheelRotation -= TurnSpeed * 90;
+            _wheelRotation += TurnSpeed * (float)delta;
+            GD.Print("RL");
         }
         else if (Input.IsActionPressed("right"))
         {
-            wheelRotation += TurnSpeed * 90;
+            _wheelRotation -= TurnSpeed * (float)delta;
+            GD.Print("RR");
         }
 
-        if (wheelRotation > 0f && currentSpeed > 0f)
+        if (Math.Abs(_currentSpeed) <= 0)
         {
-            Rotation = Rotation with { Y = Rotation.Y + wheelRotation };
+            _wheelRotation = 0;
         }
+        
         Velocity = newVel;
         MoveAndSlide();
     }
