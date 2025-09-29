@@ -12,22 +12,23 @@ public partial class TerrainChunk : Node3D
         Name = $"Chunk_{position.X}_{position.Y}";
         Position = new Vector3(position.X, 0, position.Y);
 
-        var terrainData = GenerateTerrainData(position, lod);
+        var terrainData = GenerateTerrainData(position, size, lod);
         BuildMesh(terrainData, size, lod);
     }
 
-    private TerrainData GenerateTerrainData(Vector2 position, int lod)
+    private TerrainData GenerateTerrainData(Vector2 position, float size, int lod)
     {
-        int resolution = _terrain.ChunkSize >> lod;
+        int resolution = _terrain.ChunkSize; // Use a fixed resolution for all chunks
         if (resolution < 1) resolution = 1;
 
         var terrainData = new TerrainData(resolution + 1, Terrain.MAX_TEXTURES);
+        float step = size / resolution; // Calculate the world space step between vertices
 
         foreach (var layer in _terrain.Layers)
         {
             if (layer != null)
             {
-                layer.Apply(terrainData, resolution + 1, position, lod);
+                layer.Apply(terrainData, resolution + 1, position, lod, step); // Pass the step to the layer
             }
         }
         NormalizeSplatmap(terrainData);
@@ -69,7 +70,7 @@ public partial class TerrainChunk : Node3D
         var st = new SurfaceTool();
         st.Begin(Mesh.PrimitiveType.Triangles);
 
-        int resolution = _terrain.ChunkSize >> lod;
+        int resolution = _terrain.ChunkSize; // Use a fixed resolution
         float step = size / resolution;
 
         for (int z = 0; z < resolution + 1; z++)
@@ -80,7 +81,7 @@ public partial class TerrainChunk : Node3D
                 float zPos = z * step;
                 float yPos = data.Heights[x, z];
 
-                var uv = new Vector2(Position.X + xPos, Position.Y + zPos);
+                var uv = new Vector2(Position.X + xPos, Position.Z + zPos);
 
                 var color = new Color(
                     data.Splatmap[x, z, 0],

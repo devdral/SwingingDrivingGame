@@ -18,7 +18,7 @@ public partial class PerlinNoiseLayer : TerrainLayer
     [Export(PropertyHint.Range, "0, 3")] public int TextureIndex = 0;
     [Export(PropertyHint.Range, "0.0, 1.0")] public float TextureStrength = 1.0f;
 
-    public override void Apply(TerrainData data, int resolution, Vector2 position, int lod)
+    public override void Apply(TerrainData data, int resolution, Vector2 position, int lod, float step)
     {
         var noise = new FastNoiseLite
         {
@@ -30,8 +30,6 @@ public partial class PerlinNoiseLayer : TerrainLayer
             FractalLacunarity = Lacunarity,
             Frequency = 1.0f / NoiseScale
         };
-
-        float step = 1 << lod;
 
         for (int z = 0; z < resolution; z++)
         {

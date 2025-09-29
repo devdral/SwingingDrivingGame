@@ -27,7 +27,7 @@ func get_input_direction() -> Vector3:
 	if Input.is_key_pressed(KEY_S): direction += Vector3.BACK;
 	if Input.is_key_pressed(KEY_A): direction += Vector3.LEFT;
 	if Input.is_key_pressed(KEY_D): direction += Vector3.RIGHT;
-	if Input.is_key_pressed(KEY_SHIFT): direction += Vector3.DOWN;
+	if Input.is_key_pressed(KEY_CTRL): direction += Vector3.DOWN;
 	if Input.is_key_pressed(KEY_SPACE): direction += Vector3.UP;
 
 	return direction;
