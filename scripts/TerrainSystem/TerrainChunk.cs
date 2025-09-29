@@ -80,7 +80,8 @@ public partial class TerrainChunk : Node3D
                 float zPos = z * step;
                 float yPos = data.Heights[x, z];
 
-                var uv = new Vector2((float)x / resolution, (float)z / resolution);
+                var uv = new Vector2(Position.X + xPos, Position.Y + zPos);
+
                 var color = new Color(
                     data.Splatmap[x, z, 0],
                     data.Splatmap[x, z, 1],
