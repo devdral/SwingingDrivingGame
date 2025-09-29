@@ -13,16 +13,16 @@ shader_parameter/albedo_textures = null
 shader_parameter/normal_textures = null
 shader_parameter/roughness_textures = null
 
-[node name="Terrain" type="Node3D"]
+[node name="Terrain" type="Node3D" node_paths=PackedStringArray("Viewer")]
 script = ExtResource("1_b0j75")
 Layers = [ExtResource("2_oqplg")]
 SplatmapMaterial = SubResource("ShaderMaterial_l86fn")
 Materials = [ExtResource("4_tw12r"), null, null, null]
-Generate = true
+Viewer = NodePath("Camera3D")
 
 [node name="Camera3D" type="Camera3D" parent="."]
 transform = Transform3D(-0.674985, 0, -0.737831, 0, 1, 0, 0.737831, 0, -0.674985, 0, 6.79342, 0)
 script = ExtResource("3_vjhlg")
 
 [node name="DirectionalLight3D" type="DirectionalLight3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 0.559222, 0.829018, 0, -0.829018, 0.559222, 0, 0, 0)
+transform = Transform3D(1, 0, 0, 0, 0.573248, 0.819382, 0, -0.819382, 0.573248, 0, 0, 0)

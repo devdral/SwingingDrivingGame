@@ -6,5 +6,5 @@ using Godot;
 [GlobalClass]
 public abstract partial class TerrainLayer : Resource
 {
-	public abstract void Apply(TerrainData data, int resolution);
+    public abstract void Apply(TerrainData data, int resolution, Vector2 position, int lod);
 }
