@@ -11,9 +11,13 @@ func SetFromTransform(eulerAngles : Vector3, position : Vector3) -> void:
 
 
 func Translate(translation : Vector3) -> void:
-	var rotatedTranslation = Quaternion.from_euler(angles) * translation;
+	var yaw_rotation = Quaternion.from_euler(Vector3(0, angles.y, 0))
 
-	camera_position += rotatedTranslation;
+	var horizontal_input = Vector3(translation.x, 0, translation.z)
+
+	var rotated_horizontal_translation = yaw_rotation * horizontal_input
+
+	camera_position += rotated_horizontal_translation + Vector3(0, translation.y, 0)
 
 func LerpTowards(target : CameraState, positionLerpPct : float, rotationLerpPct : float):
 	angles = angles.lerp(target.angles, rotationLerpPct);

@@ -3,11 +3,13 @@ extends Camera3D
 var target_camera_state : CameraState;
 var interpolating_camera_state : CameraState;
 
-var boost = -3.0;
+var boost = 3.0;
 
 var position_lerp_time = 0.2;
 
 var rotation_lerp_time = 0.01;
+
+const speed = 10.0
 
 
 # Called when the node enters the scene tree for the first time.
