@@ -30,7 +30,32 @@ public partial class TerrainChunk : Node3D
                 layer.Apply(terrainData, resolution + 1, position, lod);
             }
         }
+        NormalizeSplatmap(terrainData);
         return terrainData;
+    }
+
+    private void NormalizeSplatmap(TerrainData data)
+    {
+        int resolution = data.Heights.GetLength(0);
+        for (int z = 0; z < resolution; z++)
+        {
+            for (int x = 0; x < resolution; x++)
+            {
+                float totalStrength = 0;
+                for (int i = 0; i < Terrain.MAX_TEXTURES; i++)
+                {
+                    totalStrength += data.Splatmap[x, z, i];
+                }
+
+                if (totalStrength > 0)
+                {
+                    for (int i = 0; i < Terrain.MAX_TEXTURES; i++)
+                    {
+                        data.Splatmap[x, z, i] /= totalStrength;
+                    }
+                }
+            }
+        }
     }
 
     private void BuildMesh(TerrainData data, float size, int lod)

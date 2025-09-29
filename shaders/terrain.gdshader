@@ -34,4 +34,5 @@ void fragment() {
     ALBEDO = albedo;
     NORMAL_MAP = normal_map;
     ROUGHNESS = roughness;
+    ALPHA = 1.0;
 }

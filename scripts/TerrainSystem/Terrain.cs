@@ -29,6 +29,28 @@ public partial class Terrain : Node3D
             return;
         }
 
+        // Pass the texture arrays to the splatmap material's shader
+        if (SplatmapMaterial != null)
+        {
+            var albedos = new Godot.Collections.Array<Texture2D>();
+            var normals = new Godot.Collections.Array<Texture2D>();
+            var roughnesses = new Godot.Collections.Array<Texture2D>();
+
+            foreach (var material in Materials)
+            {
+                if (material != null)
+                {
+                    albedos.Add(material.AlbedoTexture);
+                    normals.Add(material.NormalTexture);
+                    roughnesses.Add(material.RoughnessTexture);
+                }
+            }
+
+            SplatmapMaterial.SetShaderParameter("albedo_textures", albedos);
+            SplatmapMaterial.SetShaderParameter("normal_textures", normals);
+            SplatmapMaterial.SetShaderParameter("roughness_textures", roughnesses);
+        }
+
         _quadtree = new Quadtree(this, MaxLODs);
         UpdateTerrain();
     }
