@@ -1,16 +1,22 @@
-[gd_scene load_steps=7 format=3 uid="uid://iwwllss8preh"]
+[gd_scene load_steps=6 format=3 uid="uid://iwwllss8preh"]
 
 [ext_resource type="Script" uid="uid://b8vi3sy72l82e" path="res://scripts/Car.cs" id="1_5orbf"]
+[ext_resource type="Script" uid="uid://ddtstkvyvfbfh" path="res://scripts/RopeManager.cs" id="2_ys5ts"]
 
 [sub_resource type="BoxMesh" id="BoxMesh_8tfcp"]
 size = Vector3(0.39, 0.22, 1)
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_jbim0"]
 size = Vector3(0.39, 0.22, 1)
+
+[sub_resource type="SphereShape3D" id="SphereShape3D_ys5ts"]
+radius = 50.0
+
 [node name="Car" type="CharacterBody3D"]
+collision_mask = 3
 script = ExtResource("1_5orbf")
 Gravity = 100.0
-Speed = 10.0
+Speed = 30.0
 Deceleration = 5.0
 
 [node name="MeshInstance3D" type="MeshInstance3D" parent="."]
@@ -20,3 +26,10 @@ mesh = SubResource("BoxMesh_8tfcp")
 [node name="CollisionShape3D" type="CollisionShape3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0.258065)
 shape = SubResource("BoxShape3D_jbim0")
+
+[node name="RopeManager" type="Node" parent="."]
+script = ExtResource("2_ys5ts")
+
+[node name="NearestSurfaceFinder" type="ShapeCast3D" parent="."]
+shape = SubResource("SphereShape3D_ys5ts")
+collision_mask = 4

@@ -1,0 +1,69 @@
+[gd_scene load_steps=7 format=3 uid="uid://fh4et77df15y"]
+
+[ext_resource type="PackedScene" uid="uid://iwwllss8preh" path="res://scenes/Car.tscn" id="1_jdkju"]
+[ext_resource type="PackedScene" uid="uid://c0rja1bxnd05w" path="res://scenes/WorldSettings.tscn" id="1_qi0lw"]
+
+[sub_resource type="PlaneMesh" id="PlaneMesh_jvtx2"]
+size = Vector2(250, 250)
+
+[sub_resource type="WorldBoundaryShape3D" id="WorldBoundaryShape3D_jdkju"]
+
+[sub_resource type="BoxMesh" id="BoxMesh_qi0lw"]
+size = Vector3(17.765, 44.1, 17.48)
+
+[sub_resource type="ConcavePolygonShape3D" id="ConcavePolygonShape3D_haueu"]
+data = PackedVector3Array(-8.8825, 22.05, 8.74, 8.8825, 22.05, 8.74, -8.8825, -22.05, 8.74, 8.8825, 22.05, 8.74, 8.8825, -22.05, 8.74, -8.8825, -22.05, 8.74, 8.8825, 22.05, -8.74, -8.8825, 22.05, -8.74, 8.8825, -22.05, -8.74, -8.8825, 22.05, -8.74, -8.8825, -22.05, -8.74, 8.8825, -22.05, -8.74, 8.8825, 22.05, 8.74, 8.8825, 22.05, -8.74, 8.8825, -22.05, 8.74, 8.8825, 22.05, -8.74, 8.8825, -22.05, -8.74, 8.8825, -22.05, 8.74, -8.8825, 22.05, -8.74, -8.8825, 22.05, 8.74, -8.8825, -22.05, -8.74, -8.8825, 22.05, 8.74, -8.8825, -22.05, 8.74, -8.8825, -22.05, -8.74, 8.8825, 22.05, 8.74, -8.8825, 22.05, 8.74, 8.8825, 22.05, -8.74, -8.8825, 22.05, 8.74, -8.8825, 22.05, -8.74, 8.8825, 22.05, -8.74, -8.8825, -22.05, 8.74, 8.8825, -22.05, 8.74, -8.8825, -22.05, -8.74, 8.8825, -22.05, 8.74, 8.8825, -22.05, -8.74, -8.8825, -22.05, -8.74)
+
+[node name="Node3D" type="Node3D"]
+
+[node name="WorldSettings" parent="." instance=ExtResource("1_qi0lw")]
+
+[node name="Ground" type="StaticBody3D" parent="."]
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Ground"]
+mesh = SubResource("PlaneMesh_jvtx2")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Ground"]
+shape = SubResource("WorldBoundaryShape3D_jdkju")
+
+[node name="Tower" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -17.3801, 21.7314, 0)
+mesh = SubResource("BoxMesh_qi0lw")
+
+[node name="Tower" type="StaticBody3D" parent="Tower"]
+collision_layer = 5
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Tower/Tower"]
+shape = SubResource("ConcavePolygonShape3D_haueu")
+
+[node name="Tower2" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 46.136, 21.7314, 33.9566)
+mesh = SubResource("BoxMesh_qi0lw")
+
+[node name="Tower2" type="StaticBody3D" parent="Tower2"]
+collision_layer = 5
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Tower2/Tower2"]
+shape = SubResource("ConcavePolygonShape3D_haueu")
+
+[node name="Tower3" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 46.2454, 21.7315, -65.4252)
+mesh = SubResource("BoxMesh_qi0lw")
+
+[node name="Tower3" type="StaticBody3D" parent="Tower3"]
+collision_layer = 5
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Tower3/Tower3"]
+shape = SubResource("ConcavePolygonShape3D_haueu")
+
+[node name="Car" parent="." instance=ExtResource("1_jdkju")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 44.0925, 59.4078, 46.6185)
+collision_mask = 7
+Speed = 20.0
+MaxSpeed = 55.0
+Deceleration = 12.0
+MaxRopeDistance = 20.0
+RopeRadius = 0.05
+
+[node name="Camera3D" type="Camera3D" parent="Car"]
+transform = Transform3D(1, 0, 0, 0, 0.991486, -0.130215, 0, 0.130215, 0.991486, 0, 1.12589, 3.79767)

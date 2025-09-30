@@ -11,14 +11,46 @@ public partial class Car : CharacterBody3D
     [Export] public float MaxYVelocity { get; set; } = 1250;
     [Export] public float MaxSpeed { get; set; } = 1500;
     [Export] public float Deceleration { get; set; } = 250;
+    [Export] public float MaxRopeDistance { get; set; } = 50;
+    [Export] public float RopeRadius { get; set; } = 0.25f;
 
     private float _wheelRotation;
     private float _currentSpeed;
     
+    private RopeManager _ropeManager;
+    private ShapeCast3D _nearestSurfaceFinder;
+    
     public float CurrentSpeed => _currentSpeed;
+
+    public override void _Ready()
+    {
+        _ropeManager = GetNode<RopeManager>("RopeManager");
+        _ropeManager.MaxDist = MaxRopeDistance;
+        _ropeManager.RopeRadius = RopeRadius;
+        
+        _nearestSurfaceFinder = GetNode<ShapeCast3D>("NearestSurfaceFinder");
+        ((SphereShape3D)_nearestSurfaceFinder.Shape).Radius = MaxRopeDistance;
+    }
 
     public override void _PhysicsProcess(double delta)
     {
+        if (Input.IsActionJustPressed("toggle_rope"))
+        {
+            if (!_ropeManager.IsUsingRope)
+            {
+                _nearestSurfaceFinder.ForceShapecastUpdate();
+                if (_nearestSurfaceFinder.GetCollisionCount() > 0)
+                {
+                    var point = _nearestSurfaceFinder.GetCollisionPoint(0);
+                    _ropeManager.EnableRope(point);
+                }
+            }
+            else
+            {
+                _ropeManager.DisableRope();
+            }
+        }
+
         var newVel = new Vector3
         {
             Y = Velocity.Y
@@ -31,18 +63,16 @@ public partial class Car : CharacterBody3D
 
         newVel.Y -= Gravity * (float)delta;
         newVel.Y = float.Clamp(newVel.Y, -MaxYVelocity, MaxYVelocity);
-        
+
         if (Input.IsActionPressed("forward"))
         {
             _currentSpeed += Speed * (float)delta;
-            GD.Print("FD");
         }
         else if (Input.IsActionPressed("back"))
         {
             _currentSpeed -= Speed * (float)delta;
-            GD.Print("BK");
         }
-        
+
         // Limit vector length on the XZ plane to limit "speed" on that plane
         if (MathF.Abs(_currentSpeed) > MaxSpeed)
         {
@@ -55,6 +85,7 @@ public partial class Car : CharacterBody3D
             {
                 _currentSpeed = 0;
             }
+
             _currentSpeed -= Deceleration * (float)delta;
         }
         else if (_currentSpeed < 0)
@@ -63,32 +94,35 @@ public partial class Car : CharacterBody3D
             {
                 _currentSpeed = 0;
             }
+
             _currentSpeed += Deceleration * (float)delta;
         }
-        
+
         Vector2 baseVector = Vector2.Up.Rotated(-Rotation.Y);
         var twoDVelocity = baseVector * _currentSpeed;
-        
+
         newVel.X = twoDVelocity.X;
         newVel.Z = twoDVelocity.Y;
-        
+
         if (Input.IsActionPressed("left"))
         {
             _wheelRotation += TurnSpeed * (float)delta;
-            GD.Print("RL");
         }
         else if (Input.IsActionPressed("right"))
         {
             _wheelRotation -= TurnSpeed * (float)delta;
-            GD.Print("RR");
         }
 
         if (Math.Abs(_currentSpeed) <= 0)
         {
             _wheelRotation = 0;
         }
-        
         Velocity = newVel;
         MoveAndSlide();
+        if (Velocity.Length() > 0)
+        {
+            _ropeManager.UpdateRope();
+        }
+        _currentSpeed = _currentSpeed > 0 ? new Vector2(Velocity.X, Velocity.Z).Length() : -(new Vector2(Velocity.X, Velocity.Z).Length());
     }
 }
