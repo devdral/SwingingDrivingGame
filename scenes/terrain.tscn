@@ -12,6 +12,7 @@ shader = ExtResource("4_a0ket")
 shader_parameter/albedo_textures = null
 shader_parameter/normal_textures = null
 shader_parameter/roughness_textures = null
+shader_parameter/metallic_textures = null
 shader_parameter/texture_scale = 32.0
 
 [node name="Terrain" type="Node3D"]
