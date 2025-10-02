@@ -17,6 +17,8 @@ public partial class Terrain : Node3D
 	[Export] public TerrainMaterial[] Materials { get; set; } = new TerrainMaterial[MAX_TEXTURES];
 	[Export] public float TextureScale = 32.0f;
 	[Export] public Node3D Viewer { get; set; }
+	[Export] public bool UseTestMaterial { get; set; } = false;
+	[Export] public StandardMaterial3D TestMaterial { get; set; }
 
 	public const int MAX_TEXTURES = 4;
 	private Quadtree _quadtree;

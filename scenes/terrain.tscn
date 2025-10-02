@@ -1,4 +1,4 @@
-[gd_scene load_steps=7 format=3 uid="uid://c0ejr5ajxt1jw"]
+[gd_scene load_steps=8 format=3 uid="uid://c0ejr5ajxt1jw"]
 
 [ext_resource type="Script" uid="uid://bmpjc8f2lmi7i" path="res://scripts/TerrainSystem/Terrain.cs" id="1_b0j75"]
 [ext_resource type="Resource" uid="uid://d2a8c2w2p0f0g" path="res://scripts/TerrainSystem/LayerResources/testperlin.tres" id="2_oqplg"]
@@ -15,12 +15,15 @@ shader_parameter/roughness_textures = null
 shader_parameter/metallic_textures = null
 shader_parameter/texture_scale = 32.0
 
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_tw12r"]
+
 [node name="Terrain" type="Node3D"]
 transform = Transform3D(0.999789, -0.0101535, -0.017845, 0.0104816, 0.999776, 0.0183919, 0.0176543, -0.0185751, 0.999672, 0, 0, 0)
 script = ExtResource("1_b0j75")
 Layers = [ExtResource("2_oqplg")]
 SplatmapMaterial = SubResource("ShaderMaterial_l86fn")
 Materials = [ExtResource("4_tw12r"), ExtResource("4_tw12r"), ExtResource("4_tw12r"), ExtResource("4_tw12r")]
+TestMaterial = SubResource("StandardMaterial3D_tw12r")
 
 [node name="Camera3D" type="Camera3D" parent="."]
 transform = Transform3D(-0.674985, 0, -0.737831, 0, 1, 0, 0.737831, 0, -0.674985, 0, 6.79342, 0)
