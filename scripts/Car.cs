@@ -61,8 +61,11 @@ public partial class Car : CharacterBody3D
             _wheelRotation = 0;
         }
 
-        newVel.Y -= Gravity * (float)delta;
-        newVel.Y = float.Clamp(newVel.Y, -MaxYVelocity, MaxYVelocity);
+        if (!_ropeManager.IsUsingRope)
+        {
+            newVel.Y -= Gravity * (float)delta;
+            newVel.Y = float.Clamp(newVel.Y, -MaxYVelocity, MaxYVelocity);
+        }   
 
         if (Input.IsActionPressed("forward"))
         {
@@ -104,6 +107,13 @@ public partial class Car : CharacterBody3D
         newVel.X = twoDVelocity.X;
         newVel.Z = twoDVelocity.Y;
 
+        if (_ropeManager.IsUsingRope)
+        {
+            Position = _ropeManager.GetRopeEndpoint();
+            _currentSpeed = 0;
+            return;
+        }
+
         if (Input.IsActionPressed("left"))
         {
             _wheelRotation += TurnSpeed * (float)delta;
@@ -117,12 +127,9 @@ public partial class Car : CharacterBody3D
         {
             _wheelRotation = 0;
         }
+        
         Velocity = newVel;
         MoveAndSlide();
-        if (Velocity.Length() > 0)
-        {
-            _ropeManager.UpdateRope();
-        }
-        _currentSpeed = _currentSpeed > 0 ? new Vector2(Velocity.X, Velocity.Z).Length() : -(new Vector2(Velocity.X, Velocity.Z).Length());
+        // _currentSpeed = _currentSpeed > 0 ? new Vector2(Velocity.X, Velocity.Z).Length() : -new Vector2(Velocity.X, Velocity.Z).Length();
     }
 }

@@ -52,12 +52,14 @@ mesh = SubResource("BoxMesh_qi0lw")
 
 [node name="Tower3" type="StaticBody3D" parent="Tower3"]
 collision_layer = 5
+collision_mask = 7
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="Tower3/Tower3"]
 shape = SubResource("ConcavePolygonShape3D_haueu")
 
 [node name="Car" parent="." instance=ExtResource("1_jdkju")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 44.0925, 59.4078, 46.6185)
+collision_layer = 4
 collision_mask = 7
 Speed = 20.0
 MaxSpeed = 55.0
