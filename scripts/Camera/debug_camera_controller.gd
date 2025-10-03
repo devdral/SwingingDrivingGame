@@ -3,7 +3,7 @@ extends Camera3D
 var target_camera_state : CameraState;
 var interpolating_camera_state : CameraState;
 
-var boost = 1.0;
+var boost = -2.0;
 
 var position_lerp_time = 0.2;
 
