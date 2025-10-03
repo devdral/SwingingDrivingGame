@@ -50,6 +50,12 @@ public partial class Car : CharacterBody3D
                 _ropeManager.DisableRope();
             }
         }
+        
+        if (_ropeManager.IsUsingRope)
+        {
+            Position = _ropeManager.GetRopeEndpoint();
+            Velocity = Vector3.Zero;
+        }
 
         var newVel = new Vector3
         {
@@ -107,13 +113,6 @@ public partial class Car : CharacterBody3D
         newVel.X = twoDVelocity.X;
         newVel.Z = twoDVelocity.Y;
 
-        if (_ropeManager.IsUsingRope)
-        {
-            Position = _ropeManager.GetRopeEndpoint();
-            _currentSpeed = 0;
-            return;
-        }
-
         if (Input.IsActionPressed("left"))
         {
             _wheelRotation += TurnSpeed * (float)delta;
@@ -127,9 +126,21 @@ public partial class Car : CharacterBody3D
         {
             _wheelRotation = 0;
         }
-        
-        Velocity = newVel;
-        MoveAndSlide();
+
+        if (!_ropeManager.IsUsingRope)
+        {
+            Velocity = newVel;
+            MoveAndSlide();
+        }
+        else
+        {
+            // _ropeManager.AddRopeEndpointVel(newVel);
+        }
         // _currentSpeed = _currentSpeed > 0 ? new Vector2(Velocity.X, Velocity.Z).Length() : -new Vector2(Velocity.X, Velocity.Z).Length();
+    }
+
+    public void SetCurrentSpeed(float newSpeed)
+    {
+        _currentSpeed = newSpeed;
     }
 }

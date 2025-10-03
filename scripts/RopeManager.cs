@@ -2,17 +2,18 @@ using Godot;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using SwingingDrivingGame;
 
 public partial class RopeManager : Node
 {
     public const int RopeBoundryLayer = 3;
-    public const float RopeSegmentLength = 0.125f; // 125mm
+    public const float RopeSegmentLength = 0.5f; // 500mm
     
     public float MaxDist { get; set; }
     public float RopeRadius { get; set; }
     
     private Node3D _ropeSegmentAttachPoint;
-    private CharacterBody3D _characterBody;
+    private Car _car;
     
     private bool _isUsingRope;
     private StaticBody3D _lastSegmentBoundryCollider;
@@ -20,6 +21,7 @@ public partial class RopeManager : Node
     private List<RigidBody3D> _ropeSegments = [];
     private List<PinJoint3D> _ropeJoints = [];
     private RigidBody3D _ropeEndpoint;
+    private Vector3 _lastVel = Vector3.Zero;
 
     public bool IsUsingRope => _isUsingRope;
 
@@ -33,20 +35,20 @@ public partial class RopeManager : Node
         {
             GD.PushError("A Car may only be placed in a 3D scene (scene root must be of type Node3D).");
         }
-        _characterBody = GetParent<CharacterBody3D>();
+        _car = GetParent<Car>();
     }
 
     public void EnableRope(Vector3 startPos)
     {
         if (_isUsingRope)
             return;
-        var targetDistance = startPos.DistanceTo(_characterBody.Position);
+        var targetDistance = startPos.DistanceTo(_car.Position);
         if (targetDistance > MaxDist)
             return;
         _isUsingRope = true;
         var distance = 0f;
         var position = startPos;
-        var endPos = _characterBody.GlobalPosition;
+        var endPos = _car.GlobalPosition;
         var direction = startPos.DirectionTo(endPos);
         RigidBody3D lastObj = null;
         
@@ -62,6 +64,7 @@ public partial class RopeManager : Node
             
             var mi = new MeshInstance3D();
             var mesh = new SphereMesh();
+            mesh.Height = RopeSegmentLength;
             mesh.Radius = RopeSegmentLength/2;
             mi.Mesh = mesh;
             mi.Scale = Vector3.One;
@@ -76,8 +79,7 @@ public partial class RopeManager : Node
             if (lastObj is not null)
             {
                 var joint = new PinJoint3D();
-                // joint.SetParam(PinJoint3D.Param.Damping, 1000);
-                // joint.SetParam(PinJoint3D.Param.ImpulseClamp, 1);
+                joint.SetParam(PinJoint3D.Param.Damping, 10000f);
                 joint.Position = @object.Position;
                 joint.NodeA = lastObj.GetPath();
                 joint.NodeB = @object.GetPath();
@@ -93,33 +95,35 @@ public partial class RopeManager : Node
             }
             lastObj = @object;
             
-            position += direction * RopeSegmentLength;
-            distance += RopeSegmentLength;
+            position += direction * RopeSegmentLength/2;
+            distance += RopeSegmentLength/2;
         }
 
         if (lastObj is not null)
         {
             var finalJoint = new PinJoint3D();
-            finalJoint.Position = _characterBody.Position;
+            finalJoint.Position = _car.Position;
             finalJoint.NodeA = lastObj.GetPath();
             
             var body = new RigidBody3D();
             body.Position = position;
             
             var collider = new CollisionShape3D();
-            var shape = _characterBody.GetNode<CollisionShape3D>("CollisionShape3D").Shape;
+            var shape = _car.GetNode<CollisionShape3D>("CollisionShape3D").Shape;
             collider.Shape = shape;
             body.AddChild(collider);
-            body.Mass = 10;
+            body.Mass = 100;
             
             _ropeSegmentAttachPoint.AddChild(body);
             finalJoint.NodeB = body.GetPath();
             _ropeSegmentAttachPoint.AddChild(finalJoint);
             _ropeJoints.Add(finalJoint);
             _ropeEndpoint = body;
-            body.LinearVelocity = _characterBody.Velocity;
+            // var rotQuat = Quaternion.FromEuler(_characterBody.Rotation);
+            // body.LinearVelocity = Vector3.Forward.Rotated(rotQuat.GetAxis(), rotQuat.GetAngle()) * 100;
+            body.LinearVelocity = _car.Velocity with { Y = 0 };
         }
-
+        _lastVel = _ropeEndpoint.LinearVelocity;
     }
 
     public Vector3 GetRopeEndpoint()
@@ -128,11 +132,17 @@ public partial class RopeManager : Node
             throw new InvalidOperationException("Cannot get rope endpoint when there is no rope.");
         return _ropeEndpoint.Position;
     }
+
+    // public void AddRopeEndpointVel(Vector3 vel)
+    // {
+    //     _ropeEndpoint.ManualVelocity = vel;
+    // }
     
     public void DisableRope()
     {
         if (!_isUsingRope)
             return;
+        _car.SetCurrentSpeed(_ropeEndpoint.LinearVelocity.Length());
         _isUsingRope = false;
         foreach (var ropeSegment in _ropeSegments)
         {
