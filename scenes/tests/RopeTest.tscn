@@ -68,12 +68,13 @@ shape = SubResource("ConvexPolygonShape3D_qi0lw")
 
 [node name="Car" parent="." instance=ExtResource("1_jdkju")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 51.4174, 116.172, 45.7054)
+RopeVerticalImpulse = 0.0
 
 [node name="Camera3D" type="Camera3D" parent="Car"]
 transform = Transform3D(1, 0, 0, 0, 0.990217, 0.139536, 0, -0.139536, 0.990217, 0, 3.87771, 9.07599)
 
 [node name="MeshInstance3D" type="MeshInstance3D" parent="."]
-transform = Transform3D(118.466, 0, 0, 0, 7.47927, 0, 0, 0, 64.0763, 0, 140.286, 0)
+transform = Transform3D(99.4586, 0, 0, 0, 15.4275, 0, 0, 0, -53.3928, -7.67649, 153.452, 18.3262)
 layers = 5
 mesh = SubResource("BoxMesh_haueu")
 

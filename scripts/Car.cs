@@ -5,14 +5,18 @@ namespace SwingingDrivingGame;
 
 public partial class Car : CharacterBody3D
 {
+    [ExportGroup("Movement")]
     [Export] public float Gravity { get; set; } = 750;
     [Export] public float Speed { get; set; } = 1000;
     [Export(PropertyHint.Range, "0,1")] public float TurnSpeed { get; set; } = 0.75f;
     [Export] public float MaxYVelocity { get; set; } = 1250;
     [Export] public float MaxSpeed { get; set; } = 1500;
     [Export] public float Deceleration { get; set; } = 250;
+    
+    [ExportGroup("Rope Settings")]
     [Export] public float MaxRopeDistance { get; set; } = 50;
     [Export] public float RopeRadius { get; set; } = 0.25f;
+    [Export] public float RopeVerticalImpulse { get; set; } = 10;
 
     private float _wheelRotation;
     private float _currentSpeed;
@@ -27,6 +31,7 @@ public partial class Car : CharacterBody3D
         _ropeManager = GetNode<RopeManager>("RopeManager");
         _ropeManager.MaxDist = MaxRopeDistance;
         _ropeManager.RopeRadius = RopeRadius;
+        _ropeManager.RopeVImp = RopeVerticalImpulse;
         
         _nearestSurfaceFinder = GetNode<ShapeCast3D>("NearestSurfaceFinder");
         ((SphereShape3D)_nearestSurfaceFinder.Shape).Radius = MaxRopeDistance;
@@ -50,6 +55,8 @@ public partial class Car : CharacterBody3D
                 _ropeManager.DisableRope();
             }
         }
+
+        Vector3 rot = Rotation;
         
         if (_ropeManager.IsUsingRope)
         {
@@ -63,7 +70,8 @@ public partial class Car : CharacterBody3D
         };
         if (Math.Abs(_wheelRotation) > 0)
         {
-            Rotation = Rotation with { Y = Rotation.Y + _wheelRotation };
+            rot = Rotation with { Y = Rotation.Y + _wheelRotation };
+            Rotation = rot;
             _wheelRotation = 0;
         }
 
@@ -107,7 +115,7 @@ public partial class Car : CharacterBody3D
             _currentSpeed += Deceleration * (float)delta;
         }
 
-        Vector2 baseVector = Vector2.Up.Rotated(-Rotation.Y);
+        Vector2 baseVector = Vector2.Up.Rotated(-rot.Y);
         var twoDVelocity = baseVector * _currentSpeed;
 
         newVel.X = twoDVelocity.X;
@@ -134,7 +142,10 @@ public partial class Car : CharacterBody3D
         }
         else
         {
-            // _ropeManager.AddRopeEndpointVel(newVel);
+            _ropeManager.AddRopeEndpointVel(new Vector3(twoDVelocity.X, 0, twoDVelocity.Y));
+            // TODO: Make the car be directed in the direction of velocity
+            // var velDir = _ropeManager.GetRopeEndpointVel().;
+            // Rotation = Rotation with { Y = }
         }
         // _currentSpeed = _currentSpeed > 0 ? new Vector2(Velocity.X, Velocity.Z).Length() : -new Vector2(Velocity.X, Velocity.Z).Length();
     }
