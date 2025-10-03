@@ -1,11 +1,17 @@
-[gd_scene load_steps=3 format=3 uid="uid://cfl3fcfu6hsmr"]
+[gd_scene load_steps=5 format=3 uid="uid://cfl3fcfu6hsmr"]
 
 [ext_resource type="PackedScene" uid="uid://c0ejr5ajxt1jw" path="res://scenes/terrain.tscn" id="1_pvbmf"]
 [ext_resource type="Script" uid="uid://btn8i0m76hx2y" path="res://scripts/Camera/debug_camera_controller.gd" id="2_d5vdp"]
+[ext_resource type="Resource" uid="uid://d2a8c2w2p0f0g" path="res://scripts/TerrainSystem/LayerResources/testperlin.tres" id="2_sc775"]
+[ext_resource type="Resource" uid="uid://c6jdauotm00cf" path="res://scripts/TerrainSystem/LayerResources/testcity.tres" id="3_s6qdw"]
 
 [node name="TerrainTest" type="Node3D"]
 
 [node name="Terrain" parent="." instance=ExtResource("1_pvbmf")]
+TerrainWidth = 4096
+TerrainDepth = 4096
+Layers = [ExtResource("2_sc775"), ExtResource("3_s6qdw")]
+MaxLODs = 5
 
 [node name="Camera3D" type="Camera3D" parent="."]
 transform = Transform3D(-0.674985, 0, -0.737831, 0, 1, 0, 0.737831, 0, -0.674985, 0, 6.79342, 0)
