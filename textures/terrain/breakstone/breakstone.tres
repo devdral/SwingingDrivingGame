@@ -10,4 +10,5 @@ script = ExtResource("1_crvoq")
 AlbedoTexture = ExtResource("1_h4ltk")
 NormalTexture = ExtResource("2_wxx2r")
 RoughnessTexture = ExtResource("3_qeodo")
+MetallicTexture = ExtResource("3_qeodo")
 metadata/_custom_type_script = "uid://whxmqru5paw7"

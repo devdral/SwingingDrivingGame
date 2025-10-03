@@ -3,11 +3,13 @@ extends Camera3D
 var target_camera_state : CameraState;
 var interpolating_camera_state : CameraState;
 
-var boost = -3.0;
+var boost = -2.0;
 
 var position_lerp_time = 0.2;
 
 var rotation_lerp_time = 0.01;
+
+const speed = 10.0
 
 
 # Called when the node enters the scene tree for the first time.
@@ -25,8 +27,8 @@ func get_input_direction() -> Vector3:
 	if Input.is_key_pressed(KEY_S): direction += Vector3.BACK;
 	if Input.is_key_pressed(KEY_A): direction += Vector3.LEFT;
 	if Input.is_key_pressed(KEY_D): direction += Vector3.RIGHT;
-	if Input.is_key_pressed(KEY_Q): direction += Vector3.DOWN;
-	if Input.is_key_pressed(KEY_E): direction += Vector3.UP;
+	if Input.is_key_pressed(KEY_CTRL): direction += Vector3.DOWN;
+	if Input.is_key_pressed(KEY_SPACE): direction += Vector3.UP;
 
 	return direction;
 
