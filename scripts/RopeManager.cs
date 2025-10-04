@@ -20,6 +20,7 @@ public partial class RopeManager : Node
     private bool _isUsingRope;
     private StaticBody3D _lastSegmentBoundryCollider;
     private float _totalLength;
+    private float _targetLength;
 
     public bool IsUsingRope => _isUsingRope;
 
@@ -43,6 +44,7 @@ public partial class RopeManager : Node
         var distance = startPos.DistanceTo(_car.Position);
         if (distance > MaxDist)
             return;
+        _targetLength = distance;
         var @object = new Node3D();
         var mesh = new CylinderMesh();
         mesh.Height = distance;
@@ -51,6 +53,7 @@ public partial class RopeManager : Node
         var mi = new MeshInstance3D();
         mi.Mesh = mesh;
         mi.RotationDegrees = new Vector3(90, 0, 0);
+        mi.Position = mi.Position with { Z = -distance / 2 };
         @object.AddChild(mi);
         @object.Position = startPos;
         _ropeSegmentAttachPoint.AddChild(@object);
@@ -197,19 +200,22 @@ public partial class RopeManager : Node
         // }
     }
 
-    public override void _Process(double delta)
+    public bool IsPointTooFar(Vector3 point, out Vector3 corrected)
     {
-        if (_isUsingRope)
+        if (!_isUsingRope)
+            throw new InvalidOperationException("There is no rope yet.");
+        var prevPoint = _ropeSegments.Last().StartPoint;
+        var distance = prevPoint.DistanceTo(point);
+        var lastSeg = _ropeSegments.Last();
+        corrected = point;
+        var targetDist = _targetLength - _totalLength + lastSeg.Length;
+        if (distance > targetDist)
         {
-            var prevPoint = _ropeSegments.Last().StartPoint;
-            var distance = prevPoint.DistanceTo(_car.Position);
-            var lastSeg = _ropeSegments.Last();
-            if (distance > MaxDist - _totalLength + lastSeg.Length)
-            {
-                GD.Print("Get back inside!!");
-                
-            }
+            var directionFromCenter = prevPoint.DirectionTo(point);
+            corrected = prevPoint + directionFromCenter * targetDist;
+            return true;
         }
+        return false;
     }
 }
 

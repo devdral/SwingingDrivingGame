@@ -49,7 +49,7 @@ toggle_rope={
 [layer_names]
 
 3d_physics/layer_1="Walls"
-3d_physics/layer_2="Rope Boundry"
+3d_physics/layer_2="Rope Segments"
 3d_physics/layer_3="Ropeable Surfaces"
 
 [physics]

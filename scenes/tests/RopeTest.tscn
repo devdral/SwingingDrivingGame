@@ -38,6 +38,7 @@ points = PackedVector3Array(-0.5, -0.5, -0.5, 0.5, 0.5, 0.5, 0.5, -0.5, 0.5, 0.5
 [node name="WorldSettings" parent="." instance=ExtResource("1_qi0lw")]
 
 [node name="Ground" type="StaticBody3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.264191, -0.185516, -0.0838814)
 
 [node name="MeshInstance3D" type="MeshInstance3D" parent="Ground"]
 mesh = SubResource("PlaneMesh_jvtx2")
@@ -46,7 +47,7 @@ mesh = SubResource("PlaneMesh_jvtx2")
 shape = SubResource("WorldBoundaryShape3D_jdkju")
 
 [node name="Side1" type="MeshInstance3D" parent="."]
-transform = Transform3D(243.494, 0, 0, 0, 114.997, 0, 0, 0, 78.5894, 0, 58.5633, 64.4824)
+transform = Transform3D(162.06, 0, 0, 0, 114.997, 0, 0, 0, 78.5894, -0.204365, 58.5439, 64.1447)
 material_override = SubResource("StandardMaterial3D_qi0lw")
 mesh = SubResource("BoxMesh_qi0lw")
 
@@ -57,7 +58,7 @@ collision_mask = 7
 shape = SubResource("ConvexPolygonShape3D_haueu")
 
 [node name="Side2" type="MeshInstance3D" parent="."]
-transform = Transform3D(243.494, 0, 0, 0, 105.363, 0, 0, 0, 78.5894, 0, 47.6794, -34.2402)
+transform = Transform3D(158.913, 0, 0, 0, 138.244, 0, 0, 0, 78.5894, 0, 27.3106, -66.2694)
 material_override = SubResource("StandardMaterial3D_haueu")
 mesh = SubResource("BoxMesh_qi0lw")
 
@@ -67,19 +68,18 @@ mesh = SubResource("BoxMesh_qi0lw")
 shape = SubResource("ConvexPolygonShape3D_qi0lw")
 
 [node name="Car" parent="." instance=ExtResource("1_jdkju")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 51.4174, 116.172, 45.7054)
-RopeVerticalImpulse = 0.0
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -16.16, 116.172, 45.7054)
 
 [node name="Camera3D" type="Camera3D" parent="Car"]
-transform = Transform3D(1, 0, 0, 0, 0.990217, 0.139536, 0, -0.139536, 0.990217, 0, 3.87771, 9.07599)
+transform = Transform3D(0.999741, 0.00317543, -0.0225345, 0, 0.990217, 0.139536, 0.0227571, -0.1395, 0.989961, 0, 5.88845, 12.1047)
 
-[node name="MeshInstance3D" type="MeshInstance3D" parent="."]
-transform = Transform3D(99.4586, 0, 0, 0, 15.4275, 0, 0, 0, -53.3928, -7.67649, 153.452, 18.3262)
+[node name="Ceiling" type="MeshInstance3D" parent="."]
+transform = Transform3D(99.4586, 0, 0, 0, 15.4275, 0, 0, 0, -53.3928, -7.67649, 152.942, 0.984802)
 layers = 5
 mesh = SubResource("BoxMesh_haueu")
 
-[node name="StaticBody3D" type="StaticBody3D" parent="MeshInstance3D"]
+[node name="StaticBody3D" type="StaticBody3D" parent="Ceiling"]
 collision_layer = 5
 
-[node name="CollisionShape3D" type="CollisionShape3D" parent="MeshInstance3D/StaticBody3D"]
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Ceiling/StaticBody3D"]
 shape = SubResource("ConvexPolygonShape3D_p7d0y")
