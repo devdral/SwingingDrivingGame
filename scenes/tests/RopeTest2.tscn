@@ -1,0 +1,116 @@
+[gd_scene load_steps=13 format=3 uid="uid://ndyijuomrac2"]
+
+[ext_resource type="PackedScene" uid="uid://iwwllss8preh" path="res://scenes/Car.tscn" id="1_xrjqf"]
+[ext_resource type="PackedScene" uid="uid://c0rja1bxnd05w" path="res://scenes/WorldSettings.tscn" id="2_ntuiq"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_xrjqf"]
+albedo_color = Color(0.0242699, 0.0907742, 0.116602, 1)
+metallic = 0.66
+roughness = 0.8
+
+[sub_resource type="PlaneMesh" id="PlaneMesh_ntuiq"]
+size = Vector2(250, 250)
+
+[sub_resource type="WorldBoundaryShape3D" id="WorldBoundaryShape3D_yi8cx"]
+
+[sub_resource type="CylinderMesh" id="CylinderMesh_78nt3"]
+
+[sub_resource type="ConvexPolygonShape3D" id="ConvexPolygonShape3D_5iurn"]
+points = PackedVector3Array(-0.214183, -0.948028, -0.451129, 0.0227317, 0.952146, 0.498887, 0.171488, 0.951995, 0.469018, -0.125934, 0.952684, -0.483291, 0.499663, -0.953674, -0.00688883, -0.387646, -0.93796, 0.315653, -0.483292, 0.952686, -0.12593, 0.375097, 0.940128, -0.329816, 0.171488, -0.951995, 0.469018, 0.140783, -0.945485, -0.479579, 0.469014, 0.952011, 0.171499, -0.387646, 0.93796, 0.315653, -0.483292, -0.952686, -0.12593, -0.183511, -0.943076, 0.464698, 0.407412, -0.946994, 0.288983, 0.375097, -0.940128, -0.329816, -0.395154, 0.955761, -0.305523, -0.479555, 0.945437, 0.14088, 0.464698, 0.943099, -0.183512, 0.140783, 0.945485, -0.479579, -0.243203, 0.945955, 0.436491, -0.479555, -0.945437, 0.14088, 0.288971, 0.946988, 0.407421, -0.395154, -0.955761, -0.305523, -0.0069906, -0.953641, 0.499658, 0.499663, 0.953674, -0.00688883, -0.271948, 0.943071, -0.419217, 0.464698, -0.943099, -0.183512, -0.125934, -0.952684, -0.483291, 0.315648, 0.937973, -0.387651, 0.469014, -0.952011, 0.171499, 0.407412, 0.946994, 0.288983)
+
+[sub_resource type="BoxMesh" id="BoxMesh_rhveb"]
+
+[sub_resource type="ConvexPolygonShape3D" id="ConvexPolygonShape3D_ntuiq"]
+points = PackedVector3Array(-0.5, -0.5, -0.5, 0.5, 0.5, 0.5, 0.5, -0.5, 0.5, 0.5, 0.5, -0.5, -0.5, 0.5, 0.5, 0.5, -0.5, -0.5, -0.5, -0.5, 0.5, -0.5, 0.5, -0.5)
+
+[sub_resource type="ConvexPolygonShape3D" id="ConvexPolygonShape3D_yi8cx"]
+points = PackedVector3Array(-0.5, -0.5, -0.5, 0.5, 0.5, 0.5, 0.5, -0.5, 0.5, 0.5, 0.5, -0.5, -0.5, 0.5, 0.5, 0.5, -0.5, -0.5, -0.5, -0.5, 0.5, -0.5, 0.5, -0.5)
+
+[sub_resource type="ConvexPolygonShape3D" id="ConvexPolygonShape3D_78nt3"]
+points = PackedVector3Array(-0.5, -0.5, -0.5, 0.5, 0.5, 0.5, 0.5, -0.5, 0.5, 0.5, 0.5, -0.5, -0.5, 0.5, 0.5, 0.5, -0.5, -0.5, -0.5, -0.5, 0.5, -0.5, 0.5, -0.5)
+
+[sub_resource type="ConvexPolygonShape3D" id="ConvexPolygonShape3D_rhveb"]
+points = PackedVector3Array(-0.5, -0.5, -0.5, 0.5, 0.5, 0.5, 0.5, -0.5, 0.5, 0.5, 0.5, -0.5, -0.5, 0.5, 0.5, 0.5, -0.5, -0.5, -0.5, -0.5, 0.5, -0.5, 0.5, -0.5)
+
+[node name="RopeTest2" type="Node3D"]
+
+[node name="Ground" type="StaticBody3D" parent="."]
+collision_mask = 3
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Ground"]
+transform = Transform3D(1, -0.000199918, -0.000151789, 0.000199564, 0.999997, -0.00230769, 0.000152253, 0.00230766, 0.999997, 0, 0, 0)
+material_override = SubResource("StandardMaterial3D_xrjqf")
+mesh = SubResource("PlaneMesh_ntuiq")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Ground/MeshInstance3D"]
+transform = Transform3D(1, -0.000199918, -0.000151788, 0.000199565, 0.999997, -0.00230769, 0.000152253, 0.00230766, 0.999997, 0.0490099, 0.742848, 321.904)
+material_override = SubResource("StandardMaterial3D_xrjqf")
+mesh = SubResource("PlaneMesh_ntuiq")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Ground"]
+shape = SubResource("WorldBoundaryShape3D_yi8cx")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="."]
+transform = Transform3D(2.03797, 0, 0, 0, 9.71107, 0, 0, 0, 2.11274, 0.0787373, 6.70306, -0.0494232)
+mesh = SubResource("CylinderMesh_78nt3")
+
+[node name="StaticBody3D" type="StaticBody3D" parent="MeshInstance3D"]
+collision_layer = 5
+collision_mask = 3
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="MeshInstance3D/StaticBody3D"]
+shape = SubResource("ConvexPolygonShape3D_5iurn")
+
+[node name="MeshInstance3D2" type="MeshInstance3D" parent="."]
+transform = Transform3D(104.628, 0, 0, 0, 31.3001, 0, 0, 0, 0.618122, 1.01972, -4.09144, -47.3352)
+mesh = SubResource("BoxMesh_rhveb")
+
+[node name="StaticBody3D" type="StaticBody3D" parent="MeshInstance3D2"]
+collision_layer = 3
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="MeshInstance3D2/StaticBody3D"]
+shape = SubResource("ConvexPolygonShape3D_ntuiq")
+
+[node name="MeshInstance3D3" type="MeshInstance3D" parent="."]
+transform = Transform3D(100.44, 0, 0, 0, 26.0888, 0, 0, 0, 0.644944, -0.88457, -1.37369, 45.9251)
+mesh = SubResource("BoxMesh_rhveb")
+
+[node name="StaticBody3D" type="StaticBody3D" parent="MeshInstance3D3"]
+collision_layer = 3
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="MeshInstance3D3/StaticBody3D"]
+shape = SubResource("ConvexPolygonShape3D_yi8cx")
+
+[node name="MeshInstance3D4" type="MeshInstance3D" parent="."]
+transform = Transform3D(-4.36709e-06, 0, 0.644944, 0, 29.8353, 0, -99.9073, 0, -2.81914e-08, 44.8404, -3.26406, 1.31839)
+mesh = SubResource("BoxMesh_rhveb")
+
+[node name="StaticBody3D" type="StaticBody3D" parent="MeshInstance3D4"]
+collision_layer = 3
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="MeshInstance3D4/StaticBody3D"]
+shape = SubResource("ConvexPolygonShape3D_78nt3")
+
+[node name="MeshInstance3D5" type="MeshInstance3D" parent="."]
+transform = Transform3D(-4.29281e-06, 0, 0.644944, 0, 27.3727, 0, -98.2081, 0, -2.81914e-08, -48.4665, -2.0428, 1.31839)
+mesh = SubResource("BoxMesh_rhveb")
+
+[node name="StaticBody3D" type="StaticBody3D" parent="MeshInstance3D5"]
+collision_mask = 3
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="MeshInstance3D5/StaticBody3D"]
+shape = SubResource("ConvexPolygonShape3D_rhveb")
+
+[node name="Car" parent="." instance=ExtResource("1_xrjqf")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -7.7233, 0.200965, 0.432465)
+collision_mask = 1
+Gravity = 50.0
+Speed = 25.0
+TurnSpeed = 2.5
+MaxSpeed = 75.0
+MaxRopeDistance = 30.0
+
+[node name="WorldSettings" parent="." instance=ExtResource("2_ntuiq")]
+
+[node name="Camera3D" type="Camera3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 0.930833, 0.365445, 0, -0.365445, 0.930833, -1.07343, 11.9069, 15.2861)

@@ -11,8 +11,13 @@ config_version=5
 [application]
 
 config/name="SwingingDrivingGame"
+run/main_scene="uid://fh4et77df15y"
 config/features=PackedStringArray("4.4", "C#", "Forward Plus")
 config/icon="res://icon.svg"
+
+[debug_draw_3d]
+
+settings/addon_root_folder="res://addons/debug_draw_3d"
 
 [dotnet]
 
@@ -55,3 +60,7 @@ toggle_rope={
 [physics]
 
 3d/physics_engine="Jolt Physics"
+
+[rendering]
+
+anti_aliasing/quality/msaa_3d=1
