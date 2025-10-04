@@ -1,0 +1,16 @@
+[gd_resource type="Resource" script_class="PerlinNoiseLayer" load_steps=2 format=3 uid="uid://d2a8c2w2p0f0g"]
+
+[ext_resource type="Script" uid="uid://bpmkd7x4oiyey" path="res://scripts/TerrainSystem/Layers/PerlinNoiseLayer.cs" id="1_cvv16"]
+
+[resource]
+script = ExtResource("1_cvv16")
+NoiseSeed = 1337
+NoiseScale = 50.0
+Strength = 40.0
+Octaves = 4
+Persistence = 0.5
+Lacunarity = 2.0
+UseForTexturing = false
+TextureIndex = 0
+TextureStrength = 1.0
+metadata/_custom_type_script = "uid://bpmkd7x4oiyey"
