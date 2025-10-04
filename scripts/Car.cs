@@ -163,13 +163,6 @@ public partial class Car : CharacterBody3D
         {
             _ropeManager.UpdateRope();
         }
-        // else
-        // {
-        //     _ropeManager.AddRopeEndpointVel(new Vector3(twoDVelocity.X, 0, twoDVelocity.Y));
-        //     // TODO: Make the car be directed in the direction of velocity
-        //     // var velDir = _ropeManager.GetRopeEndpointVel().;
-        //     // Rotation = Rotation with { Y = }
-        // }
         _currentSpeed = _currentSpeed > 0 ? new Vector2(Velocity.X, Velocity.Z).Length() : -new Vector2(Velocity.X, Velocity.Z).Length();
         if (IsOnFloor())
         {

@@ -75,8 +75,6 @@ public partial class RopeManager : Node
             seg.Object.QueueFree();
         }
         _ropeSegments.Clear();
-        // _lastSegmentBoundryCollider.QueueFree();
-        // _lastSegmentBoundryCollider = null;
     }
 
     public void UpdateRope()
@@ -130,18 +128,6 @@ public partial class RopeManager : Node
         else
         {
             UpdateSeg(lastSeg, _car.Position);
-            // var collisionObject = new StaticBody3D();
-            // var collider = new CollisionShape3D();
-            // var shape = new SphereShape3D();
-            // // All the remaining space, plus space occupied by the current segment
-            // shape.Radius = MaxDist - totalLength + lastSeg.Length;
-            // collider.Shape = shape;
-            // collisionObject.AddChild(collider);
-            // collisionObject.SetCollisionLayerValue(1, false);
-            // collisionObject.SetCollisionLayerValue(RopeBoundryLayer, true);
-            // collisionObject.Position = lastSeg.Object.Position;
-            // _lastSegmentBoundryCollider = collisionObject;
-            // _ropeSegmentAttachPoint.AddChild(collisionObject);
         }
     }
 
