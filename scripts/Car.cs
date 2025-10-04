@@ -16,10 +16,12 @@ public partial class Car : CharacterBody3D
     [ExportGroup("Rope Settings")]
     [Export] public float MaxRopeDistance { get; set; } = 50;
     [Export] public float RopeRadius { get; set; } = 0.25f;
-    [Export] public float RopeVerticalImpulse { get; set; } = 10;
+    // [Export] public float RopeVerticalImpulse { get; set; } = 10;
 
     private float _wheelRotation;
     private float _currentSpeed;
+    private bool _shouldOverrideNextMovement;
+    private Vector3 _movementOverride;
     
     private RopeManager _ropeManager;
     private ShapeCast3D _nearestSurfaceFinder;
@@ -31,7 +33,6 @@ public partial class Car : CharacterBody3D
         _ropeManager = GetNode<RopeManager>("RopeManager");
         _ropeManager.MaxDist = MaxRopeDistance;
         _ropeManager.RopeRadius = RopeRadius;
-        _ropeManager.RopeVImp = RopeVerticalImpulse;
         
         _nearestSurfaceFinder = GetNode<ShapeCast3D>("NearestSurfaceFinder");
         ((SphereShape3D)_nearestSurfaceFinder.Shape).Radius = MaxRopeDistance;
@@ -57,12 +58,6 @@ public partial class Car : CharacterBody3D
         }
 
         Vector3 rot = Rotation;
-        
-        if (_ropeManager.IsUsingRope)
-        {
-            Position = _ropeManager.GetRopeEndpoint();
-            Velocity = Vector3.Zero;
-        }
 
         var newVel = new Vector3
         {
@@ -135,23 +130,42 @@ public partial class Car : CharacterBody3D
             _wheelRotation = 0;
         }
 
-        if (!_ropeManager.IsUsingRope)
+        if (_shouldOverrideNextMovement)
         {
-            Velocity = newVel;
-            MoveAndSlide();
+            Velocity = _movementOverride;
+            _currentSpeed = 0;
+            _shouldOverrideNextMovement = false;
         }
         else
         {
-            _ropeManager.AddRopeEndpointVel(new Vector3(twoDVelocity.X, 0, twoDVelocity.Y));
-            // TODO: Make the car be directed in the direction of velocity
-            // var velDir = _ropeManager.GetRopeEndpointVel().;
-            // Rotation = Rotation with { Y = }
+            Velocity = newVel;
         }
-        // _currentSpeed = _currentSpeed > 0 ? new Vector2(Velocity.X, Velocity.Z).Length() : -new Vector2(Velocity.X, Velocity.Z).Length();
+        
+        var prevPos = Position;
+        MoveAndSlide();
+        
+        if (Position != prevPos)
+        {
+            _ropeManager.UpdateRope();
+        }
+        // else
+        // {
+        //     _ropeManager.AddRopeEndpointVel(new Vector3(twoDVelocity.X, 0, twoDVelocity.Y));
+        //     // TODO: Make the car be directed in the direction of velocity
+        //     // var velDir = _ropeManager.GetRopeEndpointVel().;
+        //     // Rotation = Rotation with { Y = }
+        // }
+        _currentSpeed = _currentSpeed > 0 ? new Vector2(Velocity.X, Velocity.Z).Length() : -new Vector2(Velocity.X, Velocity.Z).Length();
     }
 
     public void SetCurrentSpeed(float newSpeed)
     {
         _currentSpeed = newSpeed;
+    }
+
+    public void OverrideVelocity(Vector3 newVelocity)
+    {
+        _movementOverride = newVelocity;
+        _shouldOverrideNextMovement = true;
     }
 }
