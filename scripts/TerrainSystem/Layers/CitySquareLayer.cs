@@ -12,7 +12,8 @@ public partial class CitySquareLayer : TerrainLayer
 	
 	// This dictionary will cache the calculated average height for each city center.
 	// This is the key to solving the seam issue.
-	private static Dictionary<Vector2, float> _cityAverageHeights = new Dictionary<Vector2, float>();
+	private Dictionary<Vector2, float> _cityAverageHeights = new Dictionary<Vector2, float>();
+
 	// This method is hypothetical, but if your terrain generator has a "start" signal,
 	// it's good practice to connect it to clear the cache for new generations.
 	public void OnGenerationStart()

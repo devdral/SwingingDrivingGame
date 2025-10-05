@@ -9,11 +9,7 @@ public partial class CityDataManager : Node
 	[Export(PropertyHint.Range, "100.0, 1000.0")] public float RingDistance = 500.0f;
 	[Export(PropertyHint.Range, "1, 20")] public int CitiesPerRing = 8;
 
-	// Flat list of all city centers, used by CitySquareLayer
 	public List<Vector2> CityCenters { get; private set; } = new List<Vector2>();
-	
-	// List of city rings, used by RoadGenerationLayer
-	public List<List<Vector2>> CityRings { get; private set; } = new List<List<Vector2>>();
 
 	public override void _Ready()
 	{
@@ -28,14 +24,11 @@ public partial class CityDataManager : Node
 		float maxGenerationRadius = 5000.0f; 
 		int maxRingIndex = (int)(maxGenerationRadius / RingDistance);
 
-		// Always include the central city as the first "ring"
-		var centralCityRing = new List<Vector2> { Vector2.Zero };
+		// Always include the central city
 		CityCenters.Add(Vector2.Zero);
-		CityRings.Add(centralCityRing);
 
 		for (int i = 1; i <= maxRingIndex; i++)
 		{
-			var currentRing = new List<Vector2>();
 			float ringRadius = i * RingDistance;
 			int citiesInThisRing = i * CitiesPerRing;
 			var ringRandom = new RandomNumberGenerator();
@@ -49,11 +42,8 @@ public partial class CityDataManager : Node
 				angle += ringRandom.RandfRange(-0.1f, 0.1f);
 				float currentRadius = ringRadius + ringRandom.RandfRange(-RingDistance / 4f, RingDistance / 4f);
 
-				var cityPosition = new Vector2(Mathf.Cos(angle), Mathf.Sin(angle)) * currentRadius;
-				CityCenters.Add(cityPosition);
-				currentRing.Add(cityPosition);
+				CityCenters.Add(new Vector2(Mathf.Cos(angle), Mathf.Sin(angle)) * currentRadius);
 			}
-			CityRings.Add(currentRing);
 		}
 	}
 }
