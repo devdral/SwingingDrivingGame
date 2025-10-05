@@ -154,8 +154,12 @@ public partial class Car : CharacterBody3D
                 // Kind of inefficient and janky
                 // Maybe consider consolidating this down to one MoveAndSlide call
                 var rotQuat = Quaternion.FromEuler(Rotation);
-                Velocity = Velocity.Rotated(rotQuat.GetAxis(), rotQuat.GetAngle());
+                Velocity = Velocity.Rotated(rotQuat.GetAxis().Normalized(), rotQuat.GetAngle());
                 MoveAndSlide();
+                // if (GetSlideCollisionCount() > 0)
+                // {
+                //     _ropeManager.DisableRope();
+                // }
             }
         }
         

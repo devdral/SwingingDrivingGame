@@ -1,0 +1,51 @@
+[gd_scene load_steps=8 format=3 uid="uid://v61ud24gni03"]
+
+[ext_resource type="PackedScene" uid="uid://iwwllss8preh" path="res://scenes/Car.tscn" id="1_ihkhl"]
+[ext_resource type="Script" uid="uid://b8vi3sy72l82e" path="res://scripts/Car.cs" id="2_pl46a"]
+[ext_resource type="PackedScene" uid="uid://c0rja1bxnd05w" path="res://scenes/WorldSettings.tscn" id="3_pl46a"]
+
+[sub_resource type="PlaneMesh" id="PlaneMesh_b8fd8"]
+size = Vector2(250, 250)
+
+[sub_resource type="WorldBoundaryShape3D" id="WorldBoundaryShape3D_0bext"]
+
+[sub_resource type="BoxMesh" id="BoxMesh_ihkhl"]
+
+[sub_resource type="ConvexPolygonShape3D" id="ConvexPolygonShape3D_a4ihk"]
+points = PackedVector3Array(0.5, 0.5, 0.5, 0.5, 0.5, -0.5, -0.5, 0.5, 0.5, 0.5, -0.5, 0.5, 0.5, -0.5, -0.5, -0.5, 0.5, -0.5, -0.5, -0.5, 0.5, -0.5, -0.5, -0.5)
+
+[node name="RopeTest3" type="Node3D"]
+
+[node name="Ground" type="StaticBody3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.264191, -0.185516, -0.0838814)
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Ground"]
+mesh = SubResource("PlaneMesh_b8fd8")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Ground"]
+shape = SubResource("WorldBoundaryShape3D_0bext")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="."]
+transform = Transform3D(7.63624, 0, 0, 0, 38.4784, 0, 0, 0, 7.63624, 0, 4.75086, 0)
+mesh = SubResource("BoxMesh_ihkhl")
+
+[node name="StaticBody3D" type="StaticBody3D" parent="MeshInstance3D"]
+collision_layer = 5
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="MeshInstance3D/StaticBody3D"]
+shape = SubResource("ConvexPolygonShape3D_a4ihk")
+
+[node name="Car" type="CharacterBody3D" parent="." instance=ExtResource("1_ihkhl")]
+transform = Transform3D(-1, 0, 0, 0, 1, 0, 0, 0, -1, -0.781698, 24.1001, -0.239621)
+collision_layer = 0
+collision_mask = 3
+script = ExtResource("2_pl46a")
+Gravity = 100.0
+Speed = 30.0
+Deceleration = 5.0
+metadata/asset_placer_res_id = "uid://iwwllss8preh"
+
+[node name="Camera3D" type="Camera3D" parent="."]
+transform = Transform3D(-0.998814, 1.86044e-09, 0.0486929, 0.0346611, 0.702352, 0.710986, -0.0341996, 0.71183, -0.701519, -0.0807667, 25.6776, -8.29303)
+
+[node name="WorldSettings" parent="." instance=ExtResource("3_pl46a")]
