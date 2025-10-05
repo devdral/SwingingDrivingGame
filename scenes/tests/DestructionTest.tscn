@@ -191,7 +191,7 @@ Mesh = ExtResource("3_s2uhx")
 metadata/_custom_type_script = "uid://mjq6l7p4j6p7"
 
 [node name="Car" parent="." instance=ExtResource("3_quayw")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.068567, 1.23471, 3.17022)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -17.0059, 73.4201, -97.4516)
 Gravity = 20.0
 DestructionVelocity = 10.0
 

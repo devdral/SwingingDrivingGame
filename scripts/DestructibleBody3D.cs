@@ -80,6 +80,7 @@ public partial class DestructibleBody3D : Node3D
         _collider = collider;
         _staticBody.AddChild(collider);
         AddChild(_staticBody);
+        _staticBody.SetCollisionLayerValue(3,true);
     }
 
     public void ProcessCollisionWithCar(Car car, Vector3 collisionVelocity)
