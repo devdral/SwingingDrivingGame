@@ -14,11 +14,17 @@ public partial class CitySquareLayer : TerrainLayer
 	// This is the key to solving the seam issue.
 	private Dictionary<Vector2, float> _cityAverageHeights = new Dictionary<Vector2, float>();
 
+	// Add a lock object for thread safety
+	private readonly object _heightCacheLock = new();
+
 	// This method is hypothetical, but if your terrain generator has a "start" signal,
 	// it's good practice to connect it to clear the cache for new generations.
 	public void OnGenerationStart()
 	{
-		_cityAverageHeights.Clear();
+		lock (_heightCacheLock)
+		{
+			_cityAverageHeights.Clear();
+		}
 	}
 
 	public override void Apply(TerrainData data, int resolution, Vector2 position, int lod, float step)
@@ -43,15 +49,26 @@ public partial class CitySquareLayer : TerrainLayer
 					if (Mathf.Abs(worldPos.X - center.X) < SquareSize / 2.0f &&
 						Mathf.Abs(worldPos.Y - center.Y) < SquareSize / 2.0f)
 					{
-						// 1. Try to get the pre-calculated average height from our cache.
-						if (!_cityAverageHeights.TryGetValue(center, out float averageHeight))
+						float averageHeight;
+						bool heightExists;
+
+						// Lock the dictionary for reading
+						lock (_heightCacheLock)
 						{
-							// 2. If it's not in the cache, calculate it now.
+							heightExists = _cityAverageHeights.TryGetValue(center, out averageHeight);
+						}
+
+						// If it's not in the cache, calculate it now.
+						if (!heightExists)
+						{
 							averageHeight = GetAverageHeight(center, SquareSize, resolution, position, step, data);
 							
-							// 3. IMPORTANT: Store the newly calculated height in the cache.
+							// Lock the dictionary for writing.
 							// All other chunks that touch this city will now use this exact value.
-							_cityAverageHeights[center] = averageHeight;
+							lock (_heightCacheLock)
+							{
+								_cityAverageHeights[center] = averageHeight;
+							}
 						}
 						
 						// All vertices for this city square will now lerp to the same height.
