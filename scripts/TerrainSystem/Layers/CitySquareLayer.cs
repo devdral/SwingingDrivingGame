@@ -15,7 +15,7 @@ public partial class CitySquareLayer : TerrainLayer
 	private Dictionary<Vector2, float> _cityAverageHeights = new Dictionary<Vector2, float>();
 
 	// Add a lock object for thread safety
-	private readonly object _heightCacheLock = new object();
+	private readonly object _heightCacheLock = new();
 
 	// This method is hypothetical, but if your terrain generator has a "start" signal,
 	// it's good practice to connect it to clear the cache for new generations.

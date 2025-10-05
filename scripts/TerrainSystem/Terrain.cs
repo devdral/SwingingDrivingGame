@@ -30,6 +30,16 @@ public partial class Terrain : Node3D
 
 	public override void _Ready()
 	{
+		if (Layers != null)
+		{
+			foreach (var layer in Layers)
+			{
+				if (layer != null)
+				{
+					layer.Init(this);
+				}
+			}
+		}
 		// Pass the texture arrays to the splatmap material's shader
 		if (SplatmapMaterial != null)
 		{
@@ -115,5 +125,31 @@ public partial class Terrain : Node3D
 
 			return tempData.Heights[0, 0];
 		}
+	}
+	/// <summary>
+	/// Calculates the generated terrain height at a specific global position,
+	/// stopping before a specified layer is applied. This is crucial for preventing
+	/// recursive calculations within a layer.
+	/// </summary>
+	/// <param name="globalPosition">The world-space X and Z coordinates.</param>
+	/// <param name="layerToStopAt">The TerrainLayer to stop the calculation before.</param>
+	/// <returns>The height of the terrain at that point.</returns>
+	public float GetHeightUntilLayer(Vector3 globalPosition, TerrainLayer layerToStopAt)
+	{
+		var tempData = new TerrainData(1, MAX_TEXTURES);
+		var position2D = new Vector2(globalPosition.X, globalPosition.Z);
+
+		// Apply each generation layer up to the specified stop layer.
+		foreach (var layer in Layers)
+		{
+			if (layer == layerToStopAt)
+			{
+				break; // Stop before applying the target layer
+			}
+			layer.Apply(tempData, 1, position2D, 0, 1.0f);
+		}
+
+		// Return the calculated height.
+		return tempData.Heights[0, 0];
 	}
 }
