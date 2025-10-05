@@ -58,10 +58,102 @@ public partial class TerrainChunk : Node3D
 			}
 		}
 
-		BuildMesh(terrainData, size, lod);
+		BuildMeshAsync(terrainData, size, lod);
 		_isGenerationComplete = true;
 	}
 
+
+	private void BuildMeshAsync(TerrainData data, float size, int lod)
+	{
+		// Capture the position on the main thread before starting the task.
+		var chunkWorldPosition = Position;
+
+		Task.Run(() =>
+		{
+			var st = new SurfaceTool();
+			st.Begin(Mesh.PrimitiveType.Triangles);
+
+			int resolution = _terrain.ChunkSize; // Use a fixed resolution
+			float step = size / resolution;
+
+			for (int z = 0; z < resolution + 1; z++)
+			{
+				for (int x = 0; x < resolution + 1; x++)
+				{
+					float xPos = x * step;
+					float zPos = z * step;
+					float yPos = data.Heights[x, z];
+					
+					// Use the captured position variable here.
+					var uv = new Vector2(chunkWorldPosition.X + xPos, chunkWorldPosition.Z + zPos);
+
+					var color = new Color(
+						data.Splatmap[x, z, 0],
+						data.Splatmap[x, z, 1],
+						data.Splatmap[x, z, 2],
+						data.Splatmap[x, z, 3]
+					);
+
+					st.SetUV(uv);
+					st.SetColor(color);
+					st.AddVertex(new Vector3(xPos, yPos, zPos));
+				}
+			}
+
+			for (int z = 0; z < resolution; z++)
+			{
+				for (int x = 0; x < resolution; x++)
+				{
+					int topLeft = z * (resolution + 1) + x;
+					int topRight = topLeft + 1;
+					int bottomLeft = (z + 1) * (resolution + 1) + x;
+					int bottomRight = bottomLeft + 1;
+
+					st.AddIndex(topLeft);
+					st.AddIndex(topRight);
+					st.AddIndex(bottomLeft);
+
+					st.AddIndex(bottomLeft);
+					st.AddIndex(topRight);
+					st.AddIndex(bottomRight);
+				}
+			}
+
+			st.GenerateNormals();
+			st.GenerateTangents();
+
+			var mesh = st.Commit();
+			
+			CallDeferred(nameof(OnMeshGenerated), mesh);
+		});
+	}
+
+	private void OnMeshGenerated(Mesh mesh)
+	{
+		if (_meshInstance == null)
+		{
+			_meshInstance = new MeshInstance3D();
+			AddChild(_meshInstance);
+		}
+
+		_meshInstance.Mesh = mesh;
+		
+		if (_terrain.UseTestMaterial)
+		{
+			_meshInstance.MaterialOverride = _terrain.TestMaterial;
+		}
+		else
+		{
+			_meshInstance.MaterialOverride = _terrain.SplatmapMaterial;
+		}
+
+		if (_collisionShape == null)
+		{
+			_collisionShape = new CollisionShape3D();
+			AddChild(_collisionShape);
+		}
+		_collisionShape.Shape = mesh.CreateTrimeshShape();
+	}
 
 	private TerrainData GenerateTerrainData(Vector2 position, float size, int lod)
 	{
@@ -104,84 +196,5 @@ public partial class TerrainChunk : Node3D
 				}
 			}
 		}
-	}
-
-	private void BuildMesh(TerrainData data, float size, int lod)
-	{
-		if (_meshInstance == null)
-		{
-			_meshInstance = new MeshInstance3D();
-			AddChild(_meshInstance);
-		}
-
-		var st = new SurfaceTool();
-		st.Begin(Mesh.PrimitiveType.Triangles);
-
-		int resolution = _terrain.ChunkSize; // Use a fixed resolution
-		float step = size / resolution;
-
-		for (int z = 0; z < resolution + 1; z++)
-		{
-			for (int x = 0; x < resolution + 1; x++)
-			{
-				float xPos = x * step;
-				float zPos = z * step;
-				float yPos = data.Heights[x, z];
-
-				var uv = new Vector2(Position.X + xPos, Position.Z + zPos);
-
-				var color = new Color(
-					data.Splatmap[x, z, 0],
-					data.Splatmap[x, z, 1],
-					data.Splatmap[x, z, 2],
-					data.Splatmap[x, z, 3]
-				);
-
-				st.SetUV(uv);
-				st.SetColor(color);
-				st.AddVertex(new Vector3(xPos, yPos, zPos));
-			}
-		}
-
-		for (int z = 0; z < resolution; z++)
-		{
-			for (int x = 0; x < resolution; x++)
-			{
-				int topLeft = z * (resolution + 1) + x;
-				int topRight = topLeft + 1;
-				int bottomLeft = (z + 1) * (resolution + 1) + x;
-				int bottomRight = bottomLeft + 1;
-
-				st.AddIndex(topLeft);
-				st.AddIndex(topRight);
-				st.AddIndex(bottomLeft);
-
-				st.AddIndex(bottomLeft);
-				st.AddIndex(topRight);
-				st.AddIndex(bottomRight);
-			}
-		}
-
-		st.GenerateNormals();
-		st.GenerateTangents();
-
-		var mesh = st.Commit();
-		_meshInstance.Mesh = mesh;
-		
-		if (_terrain.UseTestMaterial)
-		{
-			_meshInstance.MaterialOverride = _terrain.TestMaterial;
-		}
-		else
-		{
-			_meshInstance.MaterialOverride = _terrain.SplatmapMaterial;
-		}
-
-		if (_collisionShape == null)
-		{
-			_collisionShape = new CollisionShape3D();
-			AddChild(_collisionShape);
-		}
-		_collisionShape.Shape = mesh.CreateTrimeshShape();
 	}
 }
