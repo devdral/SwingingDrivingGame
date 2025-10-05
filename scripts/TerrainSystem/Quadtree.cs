@@ -14,11 +14,6 @@ public class Quadtree
 	{
 		Root.Update(viewerPosition);
 	}
-
-	public void PreGenerate()
-	{
-		Root.PreGenerate();
-	}
 }
 
 public class QuadtreeNode
@@ -96,30 +91,6 @@ public class QuadtreeNode
 			else
 			{
 				Chunk.Show();
-			}
-		}
-	}
-
-	public void PreGenerate()
-	{
-		// Create a chunk for the current node.
-		if (Chunk == null)
-		{
-			Chunk = new TerrainChunk();
-			_terrain.AddChild(Chunk);
-			Chunk.QueueGeneration(_terrain, Position, Size, Lod);
-		}
-
-		// If not at the max LOD, subdivide and recurse.
-		if (Lod < _maxLODs)
-		{
-			if (Children == null)
-			{
-				Subdivide();
-			}
-			foreach (var child in Children)
-			{
-				child.PreGenerate();
 			}
 		}
 	}
