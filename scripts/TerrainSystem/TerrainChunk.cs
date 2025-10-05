@@ -6,7 +6,7 @@ public partial class TerrainChunk : Node3D
 	private MeshInstance3D _meshInstance;
 	private CollisionShape3D _collisionShape;
 	private Terrain _terrain;
-	private bool _isGenerationComplete = false;
+	public bool IsGenerationComplete { get; private set; } = false;
 	private int _lod;
 
 	public void QueueGeneration(Terrain terrain, Vector2 position, float size, int lod)
@@ -57,7 +57,6 @@ public partial class TerrainChunk : Node3D
 		}
 
 		BuildMeshAsync(terrainData, size, lod);
-		_isGenerationComplete = true;
 	}
 
 
@@ -152,6 +151,7 @@ public partial class TerrainChunk : Node3D
 			}
 			_collisionShape.Shape = mesh.CreateTrimeshShape();
 		}
+		IsGenerationComplete = true;
 	}
 
 	private TerrainData GenerateTerrainData(Vector2 position, float size, int lod)

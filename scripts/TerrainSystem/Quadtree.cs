@@ -50,6 +50,31 @@ public class QuadtreeNode
 			{
 				child.Update(viewerPosition);
 			}
+
+			if (Chunk != null)
+			{
+				bool allChildrenReady = true;
+				if (Children != null)
+				{
+					foreach (var child in Children)
+					{
+						if (child.Chunk == null || !child.Chunk.IsGenerationComplete)
+						{
+							allChildrenReady = false;
+							break;
+						}
+					}
+				}
+				else
+				{
+					allChildrenReady = false;
+				}
+
+				if (allChildrenReady)
+				{
+					Chunk.Hide();
+				}
+			}
 		}
 		else
 		{
@@ -63,17 +88,15 @@ public class QuadtreeNode
 				_terrain.AddChild(Chunk);
 				Chunk.QueueGeneration(_terrain, Position, Size, Lod);
 			}
+			else
+			{
+				Chunk.Show();
+			}
 		}
 	}
 
 	private void Subdivide()
 	{
-		if (Chunk != null)
-		{
-			Chunk.QueueFree();
-			Chunk = null;
-		}
-
 		Children = new QuadtreeNode[4];
 		float halfSize = Size / 2;
 		int nextLod = Lod + 1;

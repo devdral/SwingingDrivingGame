@@ -47,6 +47,7 @@ Materials = [ExtResource("4_tw12r"), ExtResource("4_tw12r"), ExtResource("4_tw12
 TestMaterial = SubResource("StandardMaterial3D_tw12r")
 
 [node name="CityGenerator" type="Node3D" parent="." node_paths=PackedStringArray("_terrain")]
+visible = false
 script = ExtResource("6_xqm8g")
 _buildingScene = ExtResource("7_l86fn")
 _terrain = NodePath("..")
