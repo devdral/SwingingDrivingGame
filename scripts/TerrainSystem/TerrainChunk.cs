@@ -7,22 +7,21 @@ public partial class TerrainChunk : Node3D
 	private CollisionShape3D _collisionShape;
 	private Terrain _terrain;
 	private bool _isGenerationComplete = false;
+	private int _lod;
 
 	public void QueueGeneration(Terrain terrain, Vector2 position, float size, int lod)
 	{
 		_terrain = terrain;
+		_lod = lod;
 		Name = $"Chunk_{position.X}_{position.Y}";
 		Position = new Vector3(position.X, 0, position.Y);
 
 		Task.Run(() =>
 		{
 			var terrainData = GenerateTerrainData(position, size, lod);
-			// We need to pass data that is compatible with Godot's Variant type.
-			// We'll pass the arrays and dimensions separately.
 			int resolution = terrainData.Heights.GetLength(0);
 			int splatmapLayers = terrainData.Splatmap.GetLength(2);
 			
-			// Flatten the arrays
 			var heightsArray = new float[resolution * resolution];
 			var splatmapArray = new float[resolution * resolution * splatmapLayers];
 
@@ -44,7 +43,6 @@ public partial class TerrainChunk : Node3D
 
 	private void OnGenerationComplete(float[] heightsArray, float[] splatmapArray, int resolution, int splatmapLayers, float size, int lod)
 	{
-		// Reconstruct the TerrainData object
 		var terrainData = new TerrainData(resolution, splatmapLayers);
 		for (int z = 0; z < resolution; z++)
 		{
@@ -65,7 +63,6 @@ public partial class TerrainChunk : Node3D
 
 	private void BuildMeshAsync(TerrainData data, float size, int lod)
 	{
-		// Capture the position on the main thread before starting the task.
 		var chunkWorldPosition = Position;
 
 		Task.Run(() =>
@@ -73,7 +70,7 @@ public partial class TerrainChunk : Node3D
 			var st = new SurfaceTool();
 			st.Begin(Mesh.PrimitiveType.Triangles);
 
-			int resolution = _terrain.ChunkSize; // Use a fixed resolution
+			int resolution = _terrain.ChunkSize;
 			float step = size / resolution;
 
 			for (int z = 0; z < resolution + 1; z++)
@@ -84,7 +81,6 @@ public partial class TerrainChunk : Node3D
 					float zPos = z * step;
 					float yPos = data.Heights[x, z];
 					
-					// Use the captured position variable here.
 					var uv = new Vector2(chunkWorldPosition.X + xPos, chunkWorldPosition.Z + zPos);
 
 					var color = new Color(
@@ -147,27 +143,30 @@ public partial class TerrainChunk : Node3D
 			_meshInstance.MaterialOverride = _terrain.SplatmapMaterial;
 		}
 
-		if (_collisionShape == null)
+		if (_lod == _terrain.MaxLODs)
 		{
-			_collisionShape = new CollisionShape3D();
-			AddChild(_collisionShape);
+			if (_collisionShape == null)
+			{
+				_collisionShape = new CollisionShape3D();
+				AddChild(_collisionShape);
+			}
+			_collisionShape.Shape = mesh.CreateTrimeshShape();
 		}
-		_collisionShape.Shape = mesh.CreateTrimeshShape();
 	}
 
 	private TerrainData GenerateTerrainData(Vector2 position, float size, int lod)
 	{
-		int resolution = _terrain.ChunkSize; // Use a fixed resolution for all chunks
+		int resolution = _terrain.ChunkSize;
 		if (resolution < 1) resolution = 1;
 
 		var terrainData = new TerrainData(resolution + 1, Terrain.MAX_TEXTURES);
-		float step = size / resolution; // Calculate the world space step between vertices
+		float step = size / resolution;
 
 		foreach (var layer in _terrain.Layers)
 		{
 			if (layer != null)
 			{
-				layer.Apply(terrainData, resolution + 1, position, lod, step); // Pass the step to the layer
+				layer.Apply(terrainData, resolution + 1, position, lod, step);
 			}
 		}
 		NormalizeSplatmap(terrainData);
