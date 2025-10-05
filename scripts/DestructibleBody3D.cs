@@ -18,9 +18,17 @@ public partial class DestructibleBody3D : Node3D
         get => _mesh;
         set
         {
-            if (_meshInstance is not null && Engine.IsEditorHint())
-                _meshInstance.Mesh = value;
             _mesh = value;
+            if (Engine.IsEditorHint())
+            {
+                GD.Print(_meshInstance);
+                if (_meshInstance is not null)
+                {
+                    _meshInstance.Mesh = value;   
+                }
+            }
+            else
+                SwapMesh();
         }
     }
 
@@ -37,16 +45,31 @@ public partial class DestructibleBody3D : Node3D
     private GDScript _scriptForDestronoi;
     private bool _alreadyDestroyed;
 
+    public DestructibleBody3D() {}
+
+    public DestructibleBody3D(Mesh mesh)
+    {
+        Mesh = mesh;
+    }
+
     public override void _Ready()
     {
         if (Engine.IsEditorHint())
         {
             var editorMi = new MeshInstance3D();
             editorMi.Mesh = Mesh;
+            _meshInstance = editorMi;
             AddChild(editorMi);
             return;
         }
         _scriptForDestronoi = GD.Load<GDScript>("res://addons/destronoi/DestronoiNode.gd");
+    }
+
+    public void SwapMesh()
+    {
+        _alreadyDestroyed = false;
+        _rigidBody?.QueueFree();
+        _rigidBody = null;
         _staticBody = new StaticBody3D();
         var mi = new MeshInstance3D();
         mi.Mesh = _mesh;

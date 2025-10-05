@@ -32,7 +32,6 @@ surface_material_override/0 = SubResource("StandardMaterial3D_s2uhx")
 transform = Transform3D(1, 0, 0, 0, 2.85056, 0, 0, 0, 1, 0, 0.0847281, 0)
 script = ExtResource("2_s2uhx")
 Mesh = ExtResource("3_s2uhx")
-ExplosionStrength = 1.0
 metadata/_custom_type_script = "uid://mjq6l7p4j6p7"
 
 [node name="Car" parent="." instance=ExtResource("3_quayw")]
