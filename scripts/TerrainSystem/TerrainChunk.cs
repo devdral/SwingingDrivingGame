@@ -1,20 +1,67 @@
 using Godot;
+using System.Threading.Tasks;
 
 public partial class TerrainChunk : Node3D
 {
 	private MeshInstance3D _meshInstance;
 	private CollisionShape3D _collisionShape;
 	private Terrain _terrain;
+	private bool _isGenerationComplete = false;
 
-	public void Generate(Terrain terrain, Vector2 position, float size, int lod)
+	public void QueueGeneration(Terrain terrain, Vector2 position, float size, int lod)
 	{
 		_terrain = terrain;
 		Name = $"Chunk_{position.X}_{position.Y}";
 		Position = new Vector3(position.X, 0, position.Y);
 
-		var terrainData = GenerateTerrainData(position, size, lod);
-		BuildMesh(terrainData, size, lod);
+		Task.Run(() =>
+		{
+			var terrainData = GenerateTerrainData(position, size, lod);
+			// We need to pass data that is compatible with Godot's Variant type.
+			// We'll pass the arrays and dimensions separately.
+			int resolution = terrainData.Heights.GetLength(0);
+			int splatmapLayers = terrainData.Splatmap.GetLength(2);
+			
+			// Flatten the arrays
+			var heightsArray = new float[resolution * resolution];
+			var splatmapArray = new float[resolution * resolution * splatmapLayers];
+
+			for (int z = 0; z < resolution; z++)
+			{
+				for (int x = 0; x < resolution; x++)
+				{
+					heightsArray[z * resolution + x] = terrainData.Heights[x, z];
+					for (int i = 0; i < splatmapLayers; i++)
+					{
+						splatmapArray[(z * resolution + x) * splatmapLayers + i] = terrainData.Splatmap[x, z, i];
+					}
+				}
+			}
+			
+			CallDeferred(nameof(OnGenerationComplete), heightsArray, splatmapArray, resolution, splatmapLayers, size, lod);
+		});
 	}
+
+	private void OnGenerationComplete(float[] heightsArray, float[] splatmapArray, int resolution, int splatmapLayers, float size, int lod)
+	{
+		// Reconstruct the TerrainData object
+		var terrainData = new TerrainData(resolution, splatmapLayers);
+		for (int z = 0; z < resolution; z++)
+		{
+			for (int x = 0; x < resolution; x++)
+			{
+				terrainData.Heights[x, z] = heightsArray[z * resolution + x];
+				for (int i = 0; i < splatmapLayers; i++)
+				{
+					terrainData.Splatmap[x, z, i] = splatmapArray[(z * resolution + x) * splatmapLayers + i];
+				}
+			}
+		}
+
+		BuildMesh(terrainData, size, lod);
+		_isGenerationComplete = true;
+	}
+
 
 	private TerrainData GenerateTerrainData(Vector2 position, float size, int lod)
 	{
