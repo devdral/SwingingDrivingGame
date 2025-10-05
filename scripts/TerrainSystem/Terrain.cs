@@ -14,6 +14,7 @@ public partial class Terrain : Node3D
 	[ExportGroup("Generation")]
 	[Export] public TerrainLayer[] Layers { get; set; } = [];
 	[Export(PropertyHint.Range, "0, 5")] public int MaxLODs = 3;
+	[Export] public bool PreGenerateOnStart { get; set; } = true;
 
 	[ExportGroup("Materials")]
 	[Export] public ShaderMaterial SplatmapMaterial { get; set; }
@@ -56,6 +57,14 @@ public partial class Terrain : Node3D
 		}
 
 		_quadtree = new Quadtree(this, MaxLODs);
+
+		if (PreGenerateOnStart)
+		{
+			GD.Print("Starting terrain pre-generation...");
+			_quadtree.PreGenerate();
+			GD.Print("Terrain pre-generation queued.");
+		}
+
 		UpdateTerrain();
 
 		// The terrain has been generated for the first time.
