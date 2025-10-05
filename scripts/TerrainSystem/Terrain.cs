@@ -3,6 +3,9 @@ using Godot;
 [GlobalClass]
 public partial class Terrain : Node3D
 {
+	[Signal]
+	public delegate void GenerationFinishedEventHandler();
+
 	[ExportGroup("Dimensions")]
 	[Export] public int TerrainWidth = 1024;
 	[Export] public int TerrainDepth = 1024;
@@ -22,6 +25,7 @@ public partial class Terrain : Node3D
 
 	public const int MAX_TEXTURES = 4;
 	private Quadtree _quadtree;
+	private bool _isInitialGenerationComplete = false;
 
 	public override void _Ready()
 	{
@@ -53,6 +57,11 @@ public partial class Terrain : Node3D
 
 		_quadtree = new Quadtree(this, MaxLODs);
 		UpdateTerrain();
+
+		// The terrain has been generated for the first time.
+		_isInitialGenerationComplete = true;
+		EmitSignal(SignalName.GenerationFinished);
+		GD.Print("Terrain generation finished.");
 	}
 
 	public override void _Process(double delta)
@@ -66,5 +75,28 @@ public partial class Terrain : Node3D
 	private void UpdateTerrain()
 	{
 		_quadtree.Update(Viewer != null ? Viewer.GlobalTransform.Origin : Vector3.Zero);
+	}
+
+	/// <summary>
+	/// Calculates the generated terrain height at a specific global position.
+	/// This method re-runs the generation layers for a single point to ensure accuracy.
+	/// </summary>
+	/// <param name="globalPosition">The world-space X and Z coordinates.</param>
+	/// <returns>The height of the terrain at that point.</returns>
+	public float GetHeight(Vector3 globalPosition)
+	{
+		// We create a temporary TerrainData for a single point (1x1 resolution).
+		var tempData = new TerrainData(1, MAX_TEXTURES);
+		var position2D = new Vector2(globalPosition.X, globalPosition.Z);
+
+		// Apply each generation layer to get the final height value.
+		foreach (var layer in Layers)
+		{
+			// We use a resolution of 1, position of the point, LOD 0, and step of 1.
+			layer.Apply(tempData, 1, position2D, 0, 1.0f);
+		}
+
+		// Return the calculated height from our temporary data.
+		return tempData.Heights[0, 0];
 	}
 }
