@@ -147,4 +147,24 @@ public class QuadtreeNode
 		}
 		Children = null;
 	}
+	public QuadtreeNode FindNode(Vector2 point)
+	{
+		if (Children != null)
+		{
+			for (int i = 0; i < 4; i++)
+			{
+				if (Children[i].Contains(point))
+				{
+					return Children[i].FindNode(point);
+				}
+			}
+		}
+		return this;
+	}
+
+	public bool Contains(Vector2 point)
+	{
+		return point.X >= Position.X && point.X < Position.X + Size &&
+			   point.Y >= Position.Y && point.Y < Position.Y + Size;
+	}
 }

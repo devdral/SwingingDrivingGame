@@ -43,20 +43,20 @@ public partial class TerrainChunk : Node3D
 
 	private void OnGenerationComplete(float[] heightsArray, float[] splatmapArray, int resolution, int splatmapLayers, float size, int lod)
 	{
-		var terrainData = new TerrainData(resolution, splatmapLayers);
+		_terrainData = new TerrainData(resolution, splatmapLayers);
 		for (int z = 0; z < resolution; z++)
 		{
 			for (int x = 0; x < resolution; x++)
 			{
-				terrainData.Heights[x, z] = heightsArray[z * resolution + x];
+				_terrainData.Heights[x, z] = heightsArray[z * resolution + x];
 				for (int i = 0; i < splatmapLayers; i++)
 				{
-					terrainData.Splatmap[x, z, i] = splatmapArray[(z * resolution + x) * splatmapLayers + i];
+					_terrainData.Splatmap[x, z, i] = splatmapArray[(z * resolution + x) * splatmapLayers + i];
 				}
 			}
 		}
 
-		BuildMeshAsync(terrainData, size, lod);
+		BuildMeshAsync(_terrainData, size, lod);
 	}
 
 
@@ -196,4 +196,19 @@ public partial class TerrainChunk : Node3D
 			}
 		}
 	}
+	public float GetHeight(Vector3 globalPosition)
+	{
+		if (!IsGenerationComplete) return 0;
+
+		var localPosition = globalPosition - Position;
+		float step = _terrain.ChunkSize / (float)(_terrain.ChunkSize);
+		int x = Mathf.Clamp((int)(localPosition.X / step), 0, _terrain.ChunkSize);
+		int z = Mathf.Clamp((int)(localPosition.Z / step), 0, _terrain.ChunkSize);
+
+		// This part needs the generated TerrainData, so you should store it in the chunk
+		// after generation. Let's assume you've stored it in a field `_terrainData`.
+		return _terrainData.Heights[x, z];
+	}
+	private TerrainData _terrainData; 
+
 }

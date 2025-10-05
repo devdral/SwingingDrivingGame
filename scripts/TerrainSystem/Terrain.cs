@@ -94,18 +94,26 @@ public partial class Terrain : Node3D
 	/// <returns>The height of the terrain at that point.</returns>
 	public float GetHeight(Vector3 globalPosition)
 	{
-		// We create a temporary TerrainData for a single point (1x1 resolution).
-		var tempData = new TerrainData(1, MAX_TEXTURES);
-		var position2D = new Vector2(globalPosition.X, globalPosition.Z);
+		// Find the chunk that contains this position.
+		var chunkNode = _quadtree.Root.FindNode(new Vector2(globalPosition.X, globalPosition.Z));
 
-		// Apply each generation layer to get the final height value.
-		foreach (var layer in Layers)
+		if (chunkNode != null && chunkNode.Chunk != null && chunkNode.Chunk.IsGenerationComplete)
 		{
-			// We use a resolution of 1, position of the point, LOD 0, and step of 1.
-			layer.Apply(tempData, 1, position2D, 0, 1.0f);
+			// If the chunk is ready, get the height from its data.
+			return chunkNode.Chunk.GetHeight(globalPosition);
 		}
+		else
+		{
+			// Fallback to the original method if the chunk is not ready.
+			var tempData = new TerrainData(1, MAX_TEXTURES);
+			var position2D = new Vector2(globalPosition.X, globalPosition.Z);
 
-		// Return the calculated height from our temporary data.
-		return tempData.Heights[0, 0];
+			foreach (var layer in Layers)
+			{
+				layer.Apply(tempData, 1, position2D, 0, 1.0f);
+			}
+
+			return tempData.Heights[0, 0];
+		}
 	}
 }
