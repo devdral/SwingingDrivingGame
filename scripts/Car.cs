@@ -16,7 +16,9 @@ public partial class Car : CharacterBody3D
     [ExportGroup("Rope Settings")]
     [Export] public float MaxRopeDistance { get; set; } = 50;
     [Export] public float RopeRadius { get; set; } = 0.125f;
-    // [Export] public float RopeVerticalImpulse { get; set; } = 10;
+    
+    [ExportGroup("Destruction Settings")]
+    [Export] public float DestructionVelocity { get; set; } = 60;
 
     private float _wheelRotation;
     private float _currentSpeed;
@@ -142,6 +144,7 @@ public partial class Car : CharacterBody3D
         }
         
         var prevPos = Position;
+        var prevVel = Velocity;
         MoveAndSlide();
         Vector3 correctedPoint;
         if (_ropeManager.IsUsingRope && _ropeManager.IsPointTooFar(Position, out correctedPoint))
@@ -158,12 +161,31 @@ public partial class Car : CharacterBody3D
                 MoveAndSlide();
             }
         }
+
+        if (GetSlideCollisionCount() > 0)
+        {
+            for (var i = 0; i < GetSlideCollisionCount(); i++)
+            {
+                var collision = GetSlideCollision(i);
+                var @object = (Node)collision.GetCollider();
+                if (@object.GetParent() is DestructibleBody3D building && !@object.Name.ToString().StartsWith("VFragment"))
+                {
+                    GD.Print("Collided!");
+                    building.ProcessCollisionWithCar(this, prevVel);
+                    Velocity = prevVel;
+                }
+                else if (@object is RigidBody3D body)
+                {
+                    body.ApplyForce(prevVel);
+                }
+            }
+        }
         
         if (Position != prevPos)
         {
             _ropeManager.UpdateRope();
         }
-        _currentSpeed = _currentSpeed > 0 ? new Vector2(Velocity.X, Velocity.Z).Length() : -new Vector2(Velocity.X, Velocity.Z).Length();
+        _currentSpeed = _currentSpeed > 0 ? new Vector2(Velocity.X, Velocity.Z).Length() : -(new Vector2(Velocity.X, Velocity.Z).Length());
         if (IsOnFloor())
         {
             Rotation = Rotation with { X = 0, Z = 0 };
