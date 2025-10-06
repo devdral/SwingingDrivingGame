@@ -1,0 +1,199 @@
+[gd_scene load_steps=8 format=3 uid="uid://rj7mcj6b07bd"]
+
+[ext_resource type="PackedScene" uid="uid://c0rja1bxnd05w" path="res://scenes/WorldSettings.tscn" id="1_7x6kk"]
+[ext_resource type="Script" uid="uid://mjq6l7p4j6p7" path="res://scripts/DestructibleBody3D.cs" id="2_s2uhx"]
+[ext_resource type="PackedScene" uid="uid://iwwllss8preh" path="res://scenes/Car.tscn" id="3_quayw"]
+[ext_resource type="ArrayMesh" uid="uid://eft7d0rkc1hf" path="res://scenes/tests/cube.obj" id="3_s2uhx"]
+
+[sub_resource type="WorldBoundaryShape3D" id="WorldBoundaryShape3D_s2uhx"]
+
+[sub_resource type="PlaneMesh" id="PlaneMesh_s2uhx"]
+size = Vector2(500, 500)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_s2uhx"]
+albedo_color = Color(0.242136, 0.216871, 0.0680829, 1)
+roughness = 0.65
+
+[node name="DestructionTest" type="Node3D"]
+
+[node name="Ground" type="StaticBody3D" parent="."]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Ground"]
+shape = SubResource("WorldBoundaryShape3D_s2uhx")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Ground"]
+transform = Transform3D(1, 0, 0, 0, 5.15677, 0, 0, 0, 1, 0, 0, 0)
+mesh = SubResource("PlaneMesh_s2uhx")
+surface_material_override/0 = SubResource("StandardMaterial3D_s2uhx")
+
+[node name="WorldSettings" parent="." instance=ExtResource("1_7x6kk")]
+
+[node name="DestructibleBody3D" type="Node3D" parent="."]
+transform = Transform3D(3.14232, 0, 0, 0, 6.20743, 0, 0, 0, 2.80473, 0, 6.15774, 0)
+script = ExtResource("2_s2uhx")
+Mesh = ExtResource("3_s2uhx")
+metadata/_custom_type_script = "uid://mjq6l7p4j6p7"
+
+[node name="DestructibleBody3D7" type="Node3D" parent="."]
+transform = Transform3D(3.14232, 0, 0, 0, 6.20743, 0, 0, 0, 2.80473, 6.40097, 6.15774, -46.8399)
+script = ExtResource("2_s2uhx")
+Mesh = ExtResource("3_s2uhx")
+metadata/_custom_type_script = "uid://mjq6l7p4j6p7"
+
+[node name="DestructibleBody3D8" type="Node3D" parent="."]
+transform = Transform3D(3.14232, 0, 0, 0, 6.20743, 0, 0, 0, 2.80473, 17.3222, 6.15774, -13.8948)
+script = ExtResource("2_s2uhx")
+Mesh = ExtResource("3_s2uhx")
+metadata/_custom_type_script = "uid://mjq6l7p4j6p7"
+
+[node name="DestructibleBody3D9" type="Node3D" parent="."]
+transform = Transform3D(3.14232, 0, 0, 0, 6.20743, 0, 0, 0, 2.80473, -30.5565, 6.15774, -71.0919)
+script = ExtResource("2_s2uhx")
+Mesh = ExtResource("3_s2uhx")
+metadata/_custom_type_script = "uid://mjq6l7p4j6p7"
+
+[node name="DestructibleBody3D10" type="Node3D" parent="."]
+transform = Transform3D(3.14232, 0, 0, 0, 6.20743, 0, 0, 0, 2.80473, 15.9282, 6.15774, -71.2576)
+script = ExtResource("2_s2uhx")
+Mesh = ExtResource("3_s2uhx")
+metadata/_custom_type_script = "uid://mjq6l7p4j6p7"
+
+[node name="DestructibleBody3D11" type="Node3D" parent="."]
+transform = Transform3D(3.14232, 0, 0, 0, 6.20743, 0, 0, 0, 2.80473, 41.4482, 6.15773, -57.6218)
+script = ExtResource("2_s2uhx")
+Mesh = ExtResource("3_s2uhx")
+metadata/_custom_type_script = "uid://mjq6l7p4j6p7"
+
+[node name="DestructibleBody3D12" type="Node3D" parent="."]
+transform = Transform3D(3.14232, 0, 0, 0, 6.20743, 0, 0, 0, 2.80473, 24.4214, 6.15773, 26.2453)
+script = ExtResource("2_s2uhx")
+Mesh = ExtResource("3_s2uhx")
+metadata/_custom_type_script = "uid://mjq6l7p4j6p7"
+
+[node name="DestructibleBody3D13" type="Node3D" parent="."]
+transform = Transform3D(3.14232, 0, 0, 0, 6.20743, 0, 0, 0, 2.80473, 26.7422, 5.33618, 47.1802)
+script = ExtResource("2_s2uhx")
+Mesh = ExtResource("3_s2uhx")
+metadata/_custom_type_script = "uid://mjq6l7p4j6p7"
+
+[node name="DestructibleBody3D14" type="Node3D" parent="."]
+transform = Transform3D(3.14232, 0, 0, 0, 6.20743, 0, 0, 0, 2.80473, 50.5668, 5.33618, 39.3877)
+script = ExtResource("2_s2uhx")
+Mesh = ExtResource("3_s2uhx")
+metadata/_custom_type_script = "uid://mjq6l7p4j6p7"
+
+[node name="DestructibleBody3D15" type="Node3D" parent="."]
+transform = Transform3D(3.14232, 0, 0, 0, 6.20743, 0, 0, 0, 2.80473, 90.4631, 5.33618, 1.34644)
+script = ExtResource("2_s2uhx")
+Mesh = ExtResource("3_s2uhx")
+metadata/_custom_type_script = "uid://mjq6l7p4j6p7"
+
+[node name="DestructibleBody3D16" type="Node3D" parent="."]
+transform = Transform3D(3.14232, 0, 0, 0, 6.20743, 0, 0, 0, 2.80473, 63.4693, 5.33618, 25.0001)
+script = ExtResource("2_s2uhx")
+Mesh = ExtResource("3_s2uhx")
+metadata/_custom_type_script = "uid://mjq6l7p4j6p7"
+
+[node name="DestructibleBody3D17" type="Node3D" parent="."]
+transform = Transform3D(3.14232, 0, 0, 0, 6.20743, 0, 0, 0, 2.80473, 52.5632, 5.33618, -9.71555)
+script = ExtResource("2_s2uhx")
+Mesh = ExtResource("3_s2uhx")
+metadata/_custom_type_script = "uid://mjq6l7p4j6p7"
+
+[node name="DestructibleBody3D18" type="Node3D" parent="."]
+transform = Transform3D(3.14232, 0, 0, 0, 6.20743, 0, 0, 0, 2.80473, 75.2508, 5.33618, -58.4067)
+script = ExtResource("2_s2uhx")
+Mesh = ExtResource("3_s2uhx")
+metadata/_custom_type_script = "uid://mjq6l7p4j6p7"
+
+[node name="DestructibleBody3D19" type="Node3D" parent="."]
+transform = Transform3D(3.14232, 0, 0, 0, 6.20743, 0, 0, 0, 2.80473, 76.0052, 5.33618, -30.2467)
+script = ExtResource("2_s2uhx")
+Mesh = ExtResource("3_s2uhx")
+metadata/_custom_type_script = "uid://mjq6l7p4j6p7"
+
+[node name="DestructibleBody3D20" type="Node3D" parent="."]
+transform = Transform3D(3.14232, 0, 0, 0, 6.20743, 0, 0, 0, 2.80473, 50.1177, 5.33618, -72.967)
+script = ExtResource("2_s2uhx")
+Mesh = ExtResource("3_s2uhx")
+metadata/_custom_type_script = "uid://mjq6l7p4j6p7"
+
+[node name="DestructibleBody3D2" type="Node3D" parent="."]
+transform = Transform3D(3.14232, 0, 0, 0, 6.20743, 0, 0, 0, 2.80473, 19.1242, 6.15774, 12.1162)
+script = ExtResource("2_s2uhx")
+Mesh = ExtResource("3_s2uhx")
+metadata/_custom_type_script = "uid://mjq6l7p4j6p7"
+
+[node name="DestructibleBody3D3" type="Node3D" parent="."]
+transform = Transform3D(3.14232, 0, 0, 0, 6.20743, 0, 0, 0, 2.80473, 34, 6.15774, -29.3037)
+script = ExtResource("2_s2uhx")
+Mesh = ExtResource("3_s2uhx")
+metadata/_custom_type_script = "uid://mjq6l7p4j6p7"
+
+[node name="DestructibleBody3D4" type="Node3D" parent="."]
+transform = Transform3D(22.5571, 0, 0, 0, 44.5599, 0, 0, 0, 20.1337, -59.9724, 31.0081, -15.5635)
+script = ExtResource("2_s2uhx")
+Mesh = ExtResource("3_s2uhx")
+metadata/_custom_type_script = "uid://mjq6l7p4j6p7"
+
+[node name="DestructibleBody3D5" type="Node3D" parent="."]
+transform = Transform3D(22.5571, 0, 0, 0, 44.5599, 0, 0, 0, 20.1337, -103.872, 28.0526, 50.6032)
+script = ExtResource("2_s2uhx")
+Mesh = ExtResource("3_s2uhx")
+metadata/_custom_type_script = "uid://mjq6l7p4j6p7"
+
+[node name="DestructibleBody3D6" type="Node3D" parent="."]
+transform = Transform3D(22.5571, 0, 0, 0, 44.5599, 0, 0, 0, 20.1337, -22.5572, 28.0526, 50.6032)
+script = ExtResource("2_s2uhx")
+Mesh = ExtResource("3_s2uhx")
+metadata/_custom_type_script = "uid://mjq6l7p4j6p7"
+
+[node name="DestructibleBody3D21" type="Node3D" parent="."]
+transform = Transform3D(22.5571, 0, 0, 0, 44.5599, 0, 0, 0, 20.1337, 32.7857, 28.0526, 91.0928)
+script = ExtResource("2_s2uhx")
+Mesh = ExtResource("3_s2uhx")
+metadata/_custom_type_script = "uid://mjq6l7p4j6p7"
+
+[node name="DestructibleBody3D22" type="Node3D" parent="."]
+transform = Transform3D(22.5571, 0, 0, 0, 44.5599, 0, 0, 0, 20.1337, 95.8607, 28.0526, 50.5047)
+script = ExtResource("2_s2uhx")
+Mesh = ExtResource("3_s2uhx")
+metadata/_custom_type_script = "uid://mjq6l7p4j6p7"
+
+[node name="DestructibleBody3D23" type="Node3D" parent="."]
+transform = Transform3D(22.5571, 0, 0, 0, 44.5599, 0, 0, 0, 20.1337, 131.816, 28.0526, -34.1876)
+script = ExtResource("2_s2uhx")
+Mesh = ExtResource("3_s2uhx")
+metadata/_custom_type_script = "uid://mjq6l7p4j6p7"
+
+[node name="DestructibleBody3D24" type="Node3D" parent="."]
+transform = Transform3D(22.5571, 0, 0, 0, 44.5599, 0, 0, 0, 20.1337, 84.7847, 28.0526, -108.228)
+script = ExtResource("2_s2uhx")
+Mesh = ExtResource("3_s2uhx")
+metadata/_custom_type_script = "uid://mjq6l7p4j6p7"
+
+[node name="DestructibleBody3D25" type="Node3D" parent="."]
+transform = Transform3D(22.5571, 0, 0, 0, 44.5599, 0, 0, 0, 20.1337, -29.0239, 28.0526, -112.516)
+script = ExtResource("2_s2uhx")
+Mesh = ExtResource("3_s2uhx")
+metadata/_custom_type_script = "uid://mjq6l7p4j6p7"
+
+[node name="DestructibleBody3D26" type="Node3D" parent="."]
+transform = Transform3D(22.5571, 0, 0, 0, 44.5599, 0, 0, 0, 20.1337, 31.4171, 28.0526, -164.268)
+script = ExtResource("2_s2uhx")
+Mesh = ExtResource("3_s2uhx")
+metadata/_custom_type_script = "uid://mjq6l7p4j6p7"
+
+[node name="DestructibleBody3D27" type="Node3D" parent="."]
+transform = Transform3D(22.5571, 0, 0, 0, 44.5599, 0, 0, 0, 20.1337, -90.3035, 28.0526, -99.0598)
+script = ExtResource("2_s2uhx")
+Mesh = ExtResource("3_s2uhx")
+metadata/_custom_type_script = "uid://mjq6l7p4j6p7"
+
+[node name="Car" parent="." instance=ExtResource("3_quayw")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.068567, 1.23471, 3.17022)
+Gravity = 20.0
+DestructionVelocity = 10.0
+
+[node name="Camera3D" type="Camera3D" parent="Car"]
+transform = Transform3D(1, 0, 0, 0, 0.989952, 0.141402, 0, -0.141402, 0.989952, 0, 6.83928, 9.84858)

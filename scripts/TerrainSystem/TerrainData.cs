@@ -22,4 +22,11 @@ public class TerrainData
 			}
 		}
 	}
+
+	// New constructor for deserialization
+	public TerrainData(float[,] heights, float[,,] splatmap)
+	{
+		Heights = heights;
+		Splatmap = splatmap;
+	}
 }

@@ -9,6 +9,7 @@
 TerrainWidth = 4096
 TerrainDepth = 4096
 MaxLODs = 5
+PreGenerateOnStart = false
 Viewer = NodePath("../Camera3D")
 
 [node name="Camera3D" type="Camera3D" parent="."]

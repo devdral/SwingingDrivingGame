@@ -9,6 +9,23 @@ public partial class CitySquareLayer : TerrainLayer
 	[Export(PropertyHint.Range, "0.0, 1.0")] public float FlattenStrength = 0.8f;
 
 	private CityDataManager _cityDataManager;
+	
+	// This dictionary will cache the calculated average height for each city center.
+	// This is the key to solving the seam issue.
+	private Dictionary<Vector2, float> _cityAverageHeights = new Dictionary<Vector2, float>();
+
+	// Add a lock object for thread safety
+	private readonly object _heightCacheLock = new();
+
+	// This method is hypothetical, but if your terrain generator has a "start" signal,
+	// it's good practice to connect it to clear the cache for new generations.
+	public void OnGenerationStart()
+	{
+		lock (_heightCacheLock)
+		{
+			_cityAverageHeights.Clear();
+		}
+	}
 
 	public override void Apply(TerrainData data, int resolution, Vector2 position, int lod, float step)
 	{
@@ -32,7 +49,29 @@ public partial class CitySquareLayer : TerrainLayer
 					if (Mathf.Abs(worldPos.X - center.X) < SquareSize / 2.0f &&
 						Mathf.Abs(worldPos.Y - center.Y) < SquareSize / 2.0f)
 					{
-						float averageHeight = GetAverageHeight(center, SquareSize, resolution, position, step, data);
+						float averageHeight;
+						bool heightExists;
+
+						// Lock the dictionary for reading
+						lock (_heightCacheLock)
+						{
+							heightExists = _cityAverageHeights.TryGetValue(center, out averageHeight);
+						}
+
+						// If it's not in the cache, calculate it now.
+						if (!heightExists)
+						{
+							averageHeight = GetAverageHeight(center, SquareSize, resolution, position, step, data);
+							
+							// Lock the dictionary for writing.
+							// All other chunks that touch this city will now use this exact value.
+							lock (_heightCacheLock)
+							{
+								_cityAverageHeights[center] = averageHeight;
+							}
+						}
+						
+						// All vertices for this city square will now lerp to the same height.
 						data.Heights[x, z] = Mathf.Lerp(data.Heights[x, z], averageHeight, FlattenStrength);
 					}
 				}
@@ -42,6 +81,8 @@ public partial class CitySquareLayer : TerrainLayer
 
 	private float GetAverageHeight(Vector2 center, float size, int resolution, Vector2 position, float step, TerrainData data)
 	{
+		// This function remains unchanged. Its flaw (being chunk-local) is now
+		// mitigated by the caching logic in the Apply method.
 		float totalHeight = 0;
 		int count = 0;
 
