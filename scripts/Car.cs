@@ -78,13 +78,16 @@ public partial class Car : CharacterBody3D
             newVel.Y = float.Clamp(newVel.Y, -MaxYVelocity, MaxYVelocity);
         }
 
-        if (Input.IsActionPressed("forward"))
+        if (IsOnFloor() || _ropeManager.IsUsingRope)
         {
-            _currentSpeed += Speed * (float)delta;
-        }
-        else if (Input.IsActionPressed("back"))
-        {
-            _currentSpeed -= Speed * (float)delta;
+            if (Input.IsActionPressed("forward"))
+            {
+                _currentSpeed += Speed * (float)delta;
+            }
+            else if (Input.IsActionPressed("back"))
+            {
+                _currentSpeed -= Speed * (float)delta;
+            }
         }
 
         // Limit vector length on the XZ plane to limit "speed" on that plane
@@ -117,7 +120,7 @@ public partial class Car : CharacterBody3D
 
         newVel.X = twoDVelocity.X;
         newVel.Z = twoDVelocity.Y;
-
+        
         if (Input.IsActionPressed("left"))
         {
             _wheelRotation += TurnSpeed * (float)delta;
@@ -158,7 +161,7 @@ public partial class Car : CharacterBody3D
                 Position = prevPos;
                 DebugDraw3D.DrawPoints([correctedPoint], color: Colors.BlueViolet);
                 Velocity += force;
-                LookAt(Position + Velocity.Normalized().Abs());
+                LookAt(Position + Velocity.Normalized());
                 MoveAndSlide();
             }
         }
