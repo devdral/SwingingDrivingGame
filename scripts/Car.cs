@@ -206,14 +206,11 @@ public partial class Car : CharacterBody3D
         _shouldOverrideNextMovement = true;
     }
 
-    public override void _Input(InputEvent @event)
+    public override void _Process(double delta)
     {
-        if (@event is InputEventAction action)
+        if (Input.IsActionJustPressed("respawn"))
         {
-            if (action.Action == "respawn")
-            {
-                Position = _spawnPoint;
-            }
+            Position = _spawnPoint;
         }
     }
 }
