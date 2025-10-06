@@ -1,7 +1,6 @@
-[gd_scene load_steps=8 format=3 uid="uid://v61ud24gni03"]
+[gd_scene load_steps=7 format=3 uid="uid://v61ud24gni03"]
 
 [ext_resource type="PackedScene" uid="uid://iwwllss8preh" path="res://scenes/Car.tscn" id="1_ihkhl"]
-[ext_resource type="Script" uid="uid://b8vi3sy72l82e" path="res://scripts/Car.cs" id="2_pl46a"]
 [ext_resource type="PackedScene" uid="uid://c0rja1bxnd05w" path="res://scenes/WorldSettings.tscn" id="3_pl46a"]
 
 [sub_resource type="PlaneMesh" id="PlaneMesh_b8fd8"]
@@ -35,17 +34,12 @@ collision_layer = 5
 [node name="CollisionShape3D" type="CollisionShape3D" parent="MeshInstance3D/StaticBody3D"]
 shape = SubResource("ConvexPolygonShape3D_a4ihk")
 
-[node name="Car" type="CharacterBody3D" parent="." instance=ExtResource("1_ihkhl")]
+[node name="Car" parent="." instance=ExtResource("1_ihkhl")]
 transform = Transform3D(-1, 0, 0, 0, 1, 0, 0, 0, -1, -0.781698, 24.1001, -0.239621)
-collision_layer = 0
-collision_mask = 3
-script = ExtResource("2_pl46a")
-Gravity = 100.0
-Speed = 30.0
-Deceleration = 5.0
+Gravity = 40.0
 metadata/asset_placer_res_id = "uid://iwwllss8preh"
 
 [node name="Camera3D" type="Camera3D" parent="."]
-transform = Transform3D(-0.998814, 1.86044e-09, 0.0486929, 0.0346611, 0.702352, 0.710986, -0.0341996, 0.71183, -0.701519, -0.0807667, 25.6776, -8.29303)
+transform = Transform3D(-4.37114e-08, -0.673012, 0.739631, 0, 0.739631, 0.673012, -1, 2.94183e-08, -3.23303e-08, 6.86318, 26.099, -8.87471)
 
 [node name="WorldSettings" parent="." instance=ExtResource("3_pl46a")]
