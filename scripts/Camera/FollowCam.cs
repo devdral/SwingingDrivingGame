@@ -4,6 +4,7 @@ using SwingingDrivingGame.Utility;
 
 namespace SwingingDrivingGame;
 
+[GlobalClass]
 public partial class FollowCam : Camera3D
 {
     [Export] public Node3D? Following { get; set; }
