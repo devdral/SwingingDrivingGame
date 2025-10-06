@@ -21,3 +21,5 @@ mono_crash.*.json
 # IDE
 .idea/
 .vscode/
+
+addons/asset_placer

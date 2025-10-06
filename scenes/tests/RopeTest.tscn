@@ -1,7 +1,8 @@
-[gd_scene load_steps=12 format=3 uid="uid://fh4et77df15y"]
+[gd_scene load_steps=13 format=3 uid="uid://fh4et77df15y"]
 
 [ext_resource type="PackedScene" uid="uid://iwwllss8preh" path="res://scenes/Car.tscn" id="1_jdkju"]
 [ext_resource type="PackedScene" uid="uid://c0rja1bxnd05w" path="res://scenes/WorldSettings.tscn" id="1_qi0lw"]
+[ext_resource type="Script" uid="uid://c6jwrprdeyw56" path="res://scripts/Camera/FollowCam.cs" id="3_haueu"]
 
 [sub_resource type="PlaneMesh" id="PlaneMesh_jvtx2"]
 size = Vector2(250, 250)
@@ -38,7 +39,7 @@ points = PackedVector3Array(-0.5, -0.5, -0.5, 0.5, 0.5, 0.5, 0.5, -0.5, 0.5, 0.5
 [node name="WorldSettings" parent="." instance=ExtResource("1_qi0lw")]
 
 [node name="Ground" type="StaticBody3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.264191, -0.185516, -0.0838814)
+transform = Transform3D(0.999385, -0.0142641, 0.0320233, 0.0140935, 0.999885, 0.00554699, -0.0320988, -0.00509226, 0.999472, -0.264191, -0.185516, -0.0838814)
 
 [node name="MeshInstance3D" type="MeshInstance3D" parent="Ground"]
 mesh = SubResource("PlaneMesh_jvtx2")
@@ -70,8 +71,13 @@ shape = SubResource("ConvexPolygonShape3D_qi0lw")
 [node name="Car" parent="." instance=ExtResource("1_jdkju")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -16.16, 116.172, 45.7054)
 
-[node name="Camera3D" type="Camera3D" parent="Car"]
-transform = Transform3D(0.999741, 0.00317543, -0.0225345, 0, 0.990217, 0.139536, 0.0227571, -0.1395, 0.989961, 0, 5.88845, 12.1047)
+[node name="Camera3D" type="Camera3D" parent="." node_paths=PackedStringArray("Following")]
+transform = Transform3D(0.999741, 0.00317544, -0.0225345, 0, 0.990217, 0.139536, 0.0227571, -0.1395, 0.989961, 0, 0, 0)
+script = ExtResource("3_haueu")
+Following = NodePath("../Car")
+FollowHeight = 8.25
+FollowRadius = 15.64
+RemainLevel = true
 
 [node name="Ceiling" type="MeshInstance3D" parent="."]
 transform = Transform3D(99.4586, 0, 0, 0, 15.4275, 0, 0, 0, -53.3928, -7.67649, 152.942, 0.984802)

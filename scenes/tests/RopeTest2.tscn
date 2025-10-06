@@ -1,7 +1,8 @@
-[gd_scene load_steps=13 format=3 uid="uid://ndyijuomrac2"]
+[gd_scene load_steps=14 format=3 uid="uid://ndyijuomrac2"]
 
 [ext_resource type="PackedScene" uid="uid://iwwllss8preh" path="res://scenes/Car.tscn" id="1_xrjqf"]
 [ext_resource type="PackedScene" uid="uid://c0rja1bxnd05w" path="res://scenes/WorldSettings.tscn" id="2_ntuiq"]
+[ext_resource type="Script" uid="uid://c6jwrprdeyw56" path="res://scripts/Camera/FollowCam.cs" id="3_yi8cx"]
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_xrjqf"]
 albedo_color = Color(0.0242699, 0.0907742, 0.116602, 1)
@@ -112,5 +113,9 @@ MaxRopeDistance = 30.0
 
 [node name="WorldSettings" parent="." instance=ExtResource("2_ntuiq")]
 
-[node name="Camera3D" type="Camera3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 0.930833, 0.365445, 0, -0.365445, 0.930833, -1.07343, 11.9069, 15.2861)
+[node name="Camera3D" type="Camera3D" parent="." node_paths=PackedStringArray("Following")]
+script = ExtResource("3_yi8cx")
+Following = NodePath("../Car")
+FollowHeight = 14.525
+FollowAngle = 90.0
+FollowRadius = 25.86

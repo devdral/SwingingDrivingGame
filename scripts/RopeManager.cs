@@ -75,6 +75,7 @@ public partial class RopeManager : Node
             seg.Object.QueueFree();
         }
         _ropeSegments.Clear();
+        // _car.Rotation = _car.Rotation with { X = 0, Y = 0 };
     }
 
     public void UpdateRope()
@@ -202,6 +203,16 @@ public partial class RopeManager : Node
             return true;
         }
         return false;
+    }
+
+    public Vector3 CorrectPoint(Vector3 point)
+    {
+        var prevPoint = _ropeSegments.Last().StartPoint;
+        var lastSeg = _ropeSegments.Last();
+        var targetDist = _targetLength - _totalLength + lastSeg.Length;
+        var directionFromCenter = prevPoint.DirectionTo(point);
+        var corrected = prevPoint + directionFromCenter * targetDist;
+        return corrected;
     }
 }
 

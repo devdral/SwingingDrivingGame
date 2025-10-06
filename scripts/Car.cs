@@ -24,6 +24,7 @@ public partial class Car : CharacterBody3D
     private float _currentSpeed;
     private bool _shouldOverrideNextMovement;
     private Vector3 _movementOverride;
+    private Vector3 _spawnPoint;
     
     private RopeManager _ropeManager;
     private ShapeCast3D _nearestSurfaceFinder;
@@ -32,6 +33,7 @@ public partial class Car : CharacterBody3D
 
     public override void _Ready()
     {
+        _spawnPoint = Position;
         _ropeManager = GetNode<RopeManager>("RopeManager");
         _ropeManager.MaxDist = MaxRopeDistance;
         _ropeManager.RopeRadius = RopeRadius;
@@ -78,13 +80,16 @@ public partial class Car : CharacterBody3D
             newVel.Y = float.Clamp(newVel.Y, -MaxYVelocity, MaxYVelocity);
         }   
 
-        if (Input.IsActionPressed("forward"))
+        if (IsOnFloor() || _ropeManager.IsUsingRope)
         {
-            _currentSpeed += Speed * (float)delta;
-        }
-        else if (Input.IsActionPressed("back"))
-        {
-            _currentSpeed -= Speed * (float)delta;
+            if (Input.IsActionPressed("forward"))
+            {
+                _currentSpeed += Speed * (float)delta;
+            }
+            else if (Input.IsActionPressed("back"))
+            {
+                _currentSpeed -= Speed * (float)delta;
+            }
         }
 
         // Limit vector length on the XZ plane to limit "speed" on that plane
@@ -147,37 +152,35 @@ public partial class Car : CharacterBody3D
         var prevVel = Velocity;
         MoveAndSlide();
         Vector3 correctedPoint;
-        if (_ropeManager.IsUsingRope && _ropeManager.IsPointTooFar(Position, out correctedPoint))
+        if (_ropeManager.IsUsingRope)
         {
-            Position = prevPos;
-            // DebugDraw3D.DrawSphere(correctedPoint, 5, Colors.BlueViolet);
-            if (correctedPoint != Position)
+            if (GetSlideCollisionCount() > 0)
             {
-                LookAt(correctedPoint);
-                // Kind of inefficient and janky
-                // Maybe consider consolidating this down to one MoveAndSlide call
-                var rotQuat = Quaternion.FromEuler(Rotation);
-                Velocity = Velocity.Rotated(rotQuat.GetAxis(), rotQuat.GetAngle());
-                MoveAndSlide();
+                for (var i = 0; i < GetSlideCollisionCount(); i++)
+                {
+                    var collision = GetSlideCollision(i);
+                    var @object = (Node)collision.GetCollider();
+                    if (@object.GetParent() is DestructibleBody3D building && !@object.Name.ToString().StartsWith("VFragment"))
+                    {
+                        GD.Print("Collided!");
+                        building.ProcessCollisionWithCar(this, prevVel);
+                        Velocity = prevVel;
+                    }
+                    else if (@object is RigidBody3D body)
+                    {
+                        body.ApplyForce(prevVel);
+                    }
+                }
+                _ropeManager.DisableRope();
             }
-        }
-
-        if (GetSlideCollisionCount() > 0)
-        {
-            for (var i = 0; i < GetSlideCollisionCount(); i++)
+            else if (_ropeManager.IsPointTooFar(Position, out correctedPoint))
             {
-                var collision = GetSlideCollision(i);
-                var @object = (Node)collision.GetCollider();
-                if (@object.GetParent() is DestructibleBody3D building && !@object.Name.ToString().StartsWith("VFragment"))
-                {
-                    GD.Print("Collided!");
-                    building.ProcessCollisionWithCar(this, prevVel);
-                    Velocity = prevVel;
-                }
-                else if (@object is RigidBody3D body)
-                {
-                    body.ApplyForce(prevVel);
-                }
+                var force = correctedPoint - Position;
+                Position = prevPos;
+                DebugDraw3D.DrawPoints([correctedPoint], color: Colors.BlueViolet);
+                Velocity += force;
+                LookAt(Position + Velocity.Normalized());
+                MoveAndSlide();
             }
         }
         
@@ -201,5 +204,16 @@ public partial class Car : CharacterBody3D
     {
         _movementOverride = newVelocity;
         _shouldOverrideNextMovement = true;
+    }
+
+    public override void _Input(InputEvent @event)
+    {
+        if (@event is InputEventAction action)
+        {
+            if (action.Action == "respawn")
+            {
+                Position = _spawnPoint;
+            }
+        }
     }
 }
