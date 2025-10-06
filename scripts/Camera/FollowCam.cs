@@ -12,6 +12,7 @@ public partial class FollowCam : Camera3D
     [Export] public float FollowHeight { get; set; } = 30;
     [Export(PropertyHint.Range, "0,360")] public float FollowAngle { get; set; }
     [Export] public float FollowRadius { get; set; }
+    [Export] public bool RemainLevel { get; set; } = false;
 
     public override void _Process(double delta)
     {
@@ -39,8 +40,11 @@ public partial class FollowCam : Camera3D
             Position = newPos;
         }
         LookAt(Following.Position);
-        var rotation = Rotation;
-        rotation.X = 0;
-        Rotation = rotation;
+        if (RemainLevel)
+        {
+            var rotation = Rotation;
+            rotation.X = 0;
+            Rotation = rotation;
+        }
     }
 }

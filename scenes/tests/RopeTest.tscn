@@ -75,8 +75,9 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -16.16, 116.172, 45.7054)
 transform = Transform3D(0.999741, 0.00317544, -0.0225345, 0, 0.990217, 0.139536, 0.0227571, -0.1395, 0.989961, 0, 0, 0)
 script = ExtResource("3_haueu")
 Following = NodePath("../Car")
-FollowHeight = 13.065
-FollowRadius = 22.255
+FollowHeight = 8.25
+FollowRadius = 15.64
+RemainLevel = true
 
 [node name="Ceiling" type="MeshInstance3D" parent="."]
 transform = Transform3D(99.4586, 0, 0, 0, 15.4275, 0, 0, 0, -53.3928, -7.67649, 152.942, 0.984802)
