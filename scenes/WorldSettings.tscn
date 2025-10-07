@@ -22,6 +22,7 @@ glow_enabled = true
 [node name="DirectionalLight3D" type="DirectionalLight3D" parent="."]
 transform = Transform3D(0.24279, -0.458324, 0.854981, 0.1252, 0.888785, 0.440892, -0.961966, -7.1672e-09, 0.27317, 5.23288, 3.18576, 0)
 shadow_enabled = true
+directional_shadow_max_distance = 2500.0
 
 [node name="WorldEnvironment" type="WorldEnvironment" parent="."]
 environment = SubResource("Environment_1etc6")
