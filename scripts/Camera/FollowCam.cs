@@ -22,6 +22,7 @@ public partial class FollowCam : Camera3D
 
     [ExportSubgroup("User-Rotate Camera")]
     [Export] public float MouseSensitivity { get; set; } = 30f;
+    [Export] public float JoystickRotateSensitivity { get; set; } = 80f;
 
     private float _lookUpInterpTime;
     private Vector2 _lastMousePos = Vector2.Zero;
@@ -112,8 +113,8 @@ public partial class FollowCam : Camera3D
                 _moveInterpTime = 0;
             }
         }
-
-        _lastMousePos = GetViewport().GetMousePosition();
+        
+        FollowAngle += Input.GetJoyAxis(0, JoyAxis.RightX) * JoystickRotateSensitivity * (float)GetProcessDeltaTime();
     }
 
     public override void _Input(InputEvent @event)
@@ -126,7 +127,7 @@ public partial class FollowCam : Camera3D
         {
             if (_isRotatingCamera)
             {
-                var mouseDeltaPos = GetViewport().GetMousePosition() - _lastMousePos;
+                var mouseDeltaPos = motionEvent.Relative;
                 FollowAngle += mouseDeltaPos.X * MouseSensitivity * (float)GetProcessDeltaTime();
                 Input.MouseMode = Input.MouseModeEnum.Captured;
             }

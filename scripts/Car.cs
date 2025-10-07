@@ -12,7 +12,7 @@ public partial class Car : CharacterBody3D
     [ExportGroup("Movement")]
     [Export] public float Gravity { get; set; } = 750;
     [Export] public float Speed { get; set; } = 1000;
-    [Export(PropertyHint.Range, "0,1")] public float TurnSpeed { get; set; } = 0.75f;
+    [Export] public float TurnSpeed { get; set; } = 0.75f;
     [Export] public float MaxYVelocity { get; set; } = 1250;
     [Export] public float MaxSpeed { get; set; } = 1500;
     [Export] public float Deceleration { get; set; } = 250;
@@ -84,31 +84,54 @@ public partial class Car : CharacterBody3D
             {
                 _currentSpeed -= Speed * (float)delta;
             }
+            else
+            {
+                if (_currentSpeed > 0)
+                {
+                    if (_currentSpeed < Deceleration * (float)delta)
+                    {
+                        _currentSpeed = 0;
+                    }
+
+                    _currentSpeed -= Deceleration * (float)delta;
+                }
+                else if (_currentSpeed < 0)
+                {
+                    if (_currentSpeed > -(Deceleration * (float)delta))
+                    {
+                        _currentSpeed = 0;
+                    }
+
+                    _currentSpeed += Deceleration * (float)delta;
+                }
+            }
+        }
+        else
+        {
+            if (_currentSpeed > 0)
+            {
+                if (_currentSpeed < Deceleration * (float)delta)
+                {
+                    _currentSpeed = 0;
+                }
+
+                _currentSpeed -= Deceleration * (float)delta;
+            }
+            else if (_currentSpeed < 0)
+            {
+                if (_currentSpeed > -(Deceleration * (float)delta))
+                {
+                    _currentSpeed = 0;
+                }
+
+                _currentSpeed += Deceleration * (float)delta;
+            }
         }
 
         // Limit vector length on the XZ plane to limit "speed" on that plane
         if (MathF.Abs(_currentSpeed) > MaxSpeed)
         {
             _currentSpeed = MaxSpeed;
-        }
-
-        if (_currentSpeed > 0)
-        {
-            if (_currentSpeed < Deceleration * (float)delta)
-            {
-                _currentSpeed = 0;
-            }
-
-            _currentSpeed -= Deceleration * (float)delta;
-        }
-        else if (_currentSpeed < 0)
-        {
-            if (_currentSpeed > -(Deceleration * (float)delta))
-            {
-                _currentSpeed = 0;
-            }
-
-            _currentSpeed += Deceleration * (float)delta;
         }
 
         Vector2 baseVector = Vector2.Up.Rotated(-rot.Y);
@@ -227,7 +250,11 @@ public partial class Car : CharacterBody3D
         }
 
         // Basis.Z is the direction the Transform3D is facing.
-        if (Input.IsActionJustPressed("toggle_rope"))
+    }
+
+    public override void _Input(InputEvent @event)
+    {
+        if (@event.IsActionPressed("toggle_rope"))
         {
             if (!_ropeManager.IsUsingRope)
             {

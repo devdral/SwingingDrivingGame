@@ -32,17 +32,21 @@ surface_material_override/0 = SubResource("StandardMaterial3D_s2uhx")
 [node name="WorldSettings" parent="." instance=ExtResource("1_7x6kk")]
 
 [node name="Car" parent="." instance=ExtResource("3_quayw")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -17.0059, 73.4201, -97.4516)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -17.0059, 0.668778, -78.0418)
 Gravity = 20.0
+TurnSpeed = 3.0
+MaxYVelocity = 650.0
+MaxSpeed = 200.0
+Deceleration = 160.0
 RopePlacementIndicatorScene = ExtResource("3_ambof")
 DestructionVelocity = 10.0
 
 [node name="FollowCam" type="Camera3D" parent="." node_paths=PackedStringArray("Following")]
 script = ExtResource("5_q3wte")
 Following = NodePath("../Car")
-FollowHeight = 20.0
+FollowHeight = 5.445
 FollowAngle = 90.0
-FollowRadius = 40.405
+FollowRadius = 7.105
 metadata/_custom_type_script = "uid://c6jwrprdeyw56"
 
 [node name="Buildings" type="Node" parent="."]
