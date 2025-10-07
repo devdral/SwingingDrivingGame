@@ -20,6 +20,7 @@ public partial class Car : CharacterBody3D
     [ExportGroup("Rope Settings")]
     [Export] public float MaxRopeDistance { get; set; } = 50;
     [Export] public float RopeRadius { get; set; } = 0.125f;
+    [Export] public PackedScene RopePlacementIndicatorScene { get; set; }
     
     [ExportGroup("Destruction Settings")]
     [Export] public float DestructionVelocity { get; set; } = 60;
@@ -29,10 +30,11 @@ public partial class Car : CharacterBody3D
     private bool _shouldOverrideNextMovement;
     private Vector3 _movementOverride;
     private Vector3 _spawnPoint;
+    private bool _ropeAvailable;
     
     private RopeManager _ropeManager;
     private ShapeCast3D _nearestSurfaceFinder;
-    private bool _ropeAvailable;
+    private Node3D _ropePlacementIndicator;
 
     public float CurrentSpeed => _currentSpeed;
 
@@ -42,6 +44,9 @@ public partial class Car : CharacterBody3D
         _ropeManager = GetNode<RopeManager>("RopeManager");
         _ropeManager.MaxDist = MaxRopeDistance;
         _ropeManager.RopeRadius = RopeRadius;
+        _ropePlacementIndicator = (Node3D)RopePlacementIndicatorScene.Instantiate();
+        _ropePlacementIndicator.Hide();
+        GetTree().CurrentScene.CallDeferred("add_child", _ropePlacementIndicator);
         
         _nearestSurfaceFinder = GetNode<ShapeCast3D>("NearestSurfaceFinder");
         ((SphereShape3D)_nearestSurfaceFinder.Shape).Radius = MaxRopeDistance;
@@ -208,11 +213,17 @@ public partial class Car : CharacterBody3D
         {
             EmitSignalRopeAvailable();
             _ropeAvailable = true;
+            if (!_ropeManager.IsUsingRope)
+            {
+                _ropePlacementIndicator.Position = _nearestSurfaceFinder.GetCollisionPoint(0);
+                _ropePlacementIndicator.Show();
+            }
         }
         else
         {
             EmitSignalRopeUnavailable();
             _ropeAvailable = false;
+            _ropePlacementIndicator.Hide();
         }
 
         // Basis.Z is the direction the Transform3D is facing.
@@ -223,7 +234,8 @@ public partial class Car : CharacterBody3D
                 if (_ropeAvailable)
                 {
                     var point = _nearestSurfaceFinder.GetCollisionPoint(0);
-                    _ropeManager.EnableRope(point);   
+                    _ropeManager.EnableRope(point);
+                    _ropePlacementIndicator.Hide();
                 }
             }
             else

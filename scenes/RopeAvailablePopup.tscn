@@ -1,4 +1,4 @@
-[gd_scene load_steps=5 format=3 uid="uid://2rhd1x8y5jl3"]
+[gd_scene load_steps=6 format=3 uid="uid://2rhd1x8y5jl3"]
 
 [ext_resource type="Script" uid="uid://bgsdht2rhjlr6" path="res://scripts/RopeAvailablePopup.cs" id="1_w7skq"]
 [ext_resource type="FontFile" uid="uid://cxa64ivd1cioy" path="res://fonts/merriweather.ttf" id="2_ablh7"]
@@ -7,6 +7,9 @@
 [sub_resource type="LabelSettings" id="LabelSettings_q3wte"]
 font = ExtResource("2_ablh7")
 font_size = 38
+
+[sub_resource type="LabelSettings" id="LabelSettings_w7skq"]
+font = ExtResource("2_ablh7")
 
 [node name="RopeAvailablePopup" type="PanelContainer"]
 anchors_preset = -1
@@ -27,22 +30,31 @@ theme_override_constants/margin_top = 20
 theme_override_constants/margin_right = 20
 theme_override_constants/margin_bottom = 20
 
-[node name="Content" type="HBoxContainer" parent="MarginContainer"]
+[node name="Content" type="VBoxContainer" parent="MarginContainer"]
+layout_mode = 2
+
+[node name="Text" type="HBoxContainer" parent="MarginContainer/Content"]
 layout_mode = 2
 theme_override_constants/separation = 0
 
-[node name="Label1" type="Label" parent="MarginContainer/Content"]
+[node name="Label1" type="Label" parent="MarginContainer/Content/Text"]
 layout_mode = 2
 text = "Press "
 label_settings = SubResource("LabelSettings_q3wte")
 
-[node name="TextureRect" type="TextureRect" parent="MarginContainer/Content"]
+[node name="TextureRect" type="TextureRect" parent="MarginContainer/Content/Text"]
 layout_mode = 2
 size_flags_horizontal = 4
 size_flags_vertical = 4
 texture = ExtResource("3_mj4w3")
 
-[node name="Label2" type="Label" parent="MarginContainer/Content"]
+[node name="Label2" type="Label" parent="MarginContainer/Content/Text"]
 layout_mode = 2
 text = " to enable rope"
 label_settings = SubResource("LabelSettings_q3wte")
+
+[node name="Label" type="Label" parent="MarginContainer/Content"]
+layout_mode = 2
+size_flags_horizontal = 0
+text = "The rope will be placed at the glowing blue cube."
+label_settings = SubResource("LabelSettings_w7skq")

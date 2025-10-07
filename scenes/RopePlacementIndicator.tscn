@@ -1,0 +1,9 @@
+[gd_scene load_steps=3 format=3 uid="uid://b13jhp10f8pmf"]
+
+[ext_resource type="Material" uid="uid://cv8k2aip5xvle" path="res://materials/RopePlacementIndicatorMaterial.tres" id="1_0yvor"]
+
+[sub_resource type="BoxMesh" id="BoxMesh_2xwjq"]
+
+[node name="RopePlacementIndicator" type="MeshInstance3D"]
+mesh = SubResource("BoxMesh_2xwjq")
+surface_material_override/0 = ExtResource("1_0yvor")
