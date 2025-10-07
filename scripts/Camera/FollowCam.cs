@@ -14,6 +14,12 @@ public partial class FollowCam : Camera3D
     [Export(PropertyHint.Range, "0,360")] public float FollowAngle { get; set; }
     [Export] public float FollowRadius { get; set; }
     [Export] public bool RemainLevel { get; set; } = false;
+    [ExportSubgroup("Look Up")]
+    [Export] public float LookUpTime { get; set; } = 0.75f;
+
+    [Export] public double LookUpEaseCurve { get; set; } = 4;
+
+    private float _lookUpInterpTime;
 
     public override void _Process(double delta)
     {
@@ -41,11 +47,22 @@ public partial class FollowCam : Camera3D
             Position = newPos;
         }
         LookAt(Following.Position);
+        var rotation = Rotation;
         if (RemainLevel)
         {
-            var rotation = Rotation;
             rotation.X = 0;
-            Rotation = rotation;
         }
+        else if (Input.IsActionPressed("look_up"))
+        {
+            if (_lookUpInterpTime < 1)
+                _lookUpInterpTime += 1 / LookUpTime * (float)delta;
+        }
+        else
+        {
+            if (_lookUpInterpTime > 0)
+                _lookUpInterpTime -= 1 / LookUpTime * (float)delta;
+        }
+        rotation.X = Mathf.Lerp(rotation.X, -rotation.X, (float)Mathf.Ease(_lookUpInterpTime, LookUpEaseCurve));
+        Rotation = rotation;
     }
 }
