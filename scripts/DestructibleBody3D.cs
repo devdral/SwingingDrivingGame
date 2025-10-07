@@ -36,6 +36,7 @@ public partial class DestructibleBody3D : Node3D
 
     [Export] public int ShatterStrength { get; set; } = 4;
     [Export] public float ExplosionStrength { get; set; } = 10;
+    [Export] public double FragmentLifetime { get; set; } = 10;
     
     private StaticBody3D _staticBody;
     private RigidBody3D _rigidBody;
@@ -102,10 +103,24 @@ public partial class DestructibleBody3D : Node3D
             {
                 if (node is RigidBody3D body)
                 {
-                    body.ApplyForce(collisionVelocity * .5f);
+                    body.ApplyForce(collisionVelocity * ExplosionStrength);
                 }
             }
             _alreadyDestroyed = true;
+            var timer = new Timer();
+            timer.WaitTime = FragmentLifetime;
+            timer.OneShot = true;
+            timer.Connect("timeout", new Callable(this, nameof(DestroyFragments)));
+            AddChild(timer);
+            timer.Start();
+        }
+    }
+
+    public void DestroyFragments()
+    {
+        foreach (var child in GetChildren())
+        {
+            child.QueueFree();
         }
     }
 }
