@@ -152,25 +152,27 @@ public partial class Car : CharacterBody3D
         var prevVel = Velocity;
         MoveAndSlide();
         Vector3 correctedPoint;
+        if (GetSlideCollisionCount() > 0)
+        {
+            for (var i = 0; i < GetSlideCollisionCount(); i++)
+            {
+                var collision = GetSlideCollision(i);
+                var @object = (Node)collision.GetCollider();
+                if (@object.GetParent() is DestructibleBody3D building && !@object.Name.ToString().StartsWith("VFragment"))
+                {
+                    building.ProcessCollisionWithCar(this, prevVel);
+                    Velocity = prevVel;
+                }
+                else if (@object is RigidBody3D body)
+                {
+                    body.ApplyForce(prevVel);
+                }
+            }
+        }
         if (_ropeManager.IsUsingRope)
         {
             if (GetSlideCollisionCount() > 0)
             {
-                for (var i = 0; i < GetSlideCollisionCount(); i++)
-                {
-                    var collision = GetSlideCollision(i);
-                    var @object = (Node)collision.GetCollider();
-                    if (@object.GetParent() is DestructibleBody3D building && !@object.Name.ToString().StartsWith("VFragment"))
-                    {
-                        GD.Print("Collided!");
-                        building.ProcessCollisionWithCar(this, prevVel);
-                        Velocity = prevVel;
-                    }
-                    else if (@object is RigidBody3D body)
-                    {
-                        body.ApplyForce(prevVel);
-                    }
-                }
                 _ropeManager.DisableRope();
             }
             else if (_ropeManager.IsPointTooFar(Position, out correctedPoint))
