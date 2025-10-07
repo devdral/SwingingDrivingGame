@@ -16,8 +16,8 @@ public partial class FollowCam : Camera3D
     [Export] public bool RemainLevel { get; set; } = false;
     
     [ExportSubgroup("Look Up")]
-    [Export] public float LookUpTime { get; set; } = 0.75f;
-    [Export] public double LookUpEaseCurve { get; set; } = 4;
+    [Export] public float LookUpTime { get; set; } = 0.25f;
+    [Export] public double LookUpEaseCurve { get; set; } = -4;
     
     [ExportSubgroup("User-Rotate Camera")]
     [Export] public float MouseSensitivity { get; set; } = 50;
