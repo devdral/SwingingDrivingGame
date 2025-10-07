@@ -20,7 +20,7 @@ public partial class FollowCam : Camera3D
     [Export] public double LookUpEaseCurve { get; set; } = 4;
     
     [ExportSubgroup("User-Rotate Camera")]
-    [Export] public float MouseSensitivity { get; set; } = 10f;
+    [Export] public float MouseSensitivity { get; set; } = 50;
     
     private float _lookUpInterpTime;
     private Vector2 _lastMousePos = Vector2.Zero;
