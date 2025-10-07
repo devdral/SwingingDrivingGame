@@ -14,17 +14,22 @@ public partial class FollowCam : Camera3D
     [Export(PropertyHint.Range, "0,360")] public float FollowAngle { get; set; }
     [Export] public float FollowRadius { get; set; }
     [Export] public bool RemainLevel { get; set; } = false;
+    
     [ExportSubgroup("Look Up")]
     [Export] public float LookUpTime { get; set; } = 0.75f;
-
     [Export] public double LookUpEaseCurve { get; set; } = 4;
-
+    
+    [ExportSubgroup("User-Rotate Camera")]
+    [Export] public float MouseSensitivity { get; set; } = 10f;
+    
     private float _lookUpInterpTime;
+    private Vector2 _lastMousePos = Vector2.Zero;
+    private bool _isRotatingCamera = false;
 
     public override void _Process(double delta)
     {
         if (Following is null)
-            throw new NullReferenceException("Please set the Node3D to be followed.");
+            GD.PushError("Please set the Node3D to be followed.");
         float angle;
         if (Following.Rotation.Y > Mathf.DegToRad(180))
             angle = -FollowAngle;
@@ -64,5 +69,27 @@ public partial class FollowCam : Camera3D
         }
         rotation.X = Mathf.Lerp(rotation.X, -rotation.X, (float)Mathf.Ease(_lookUpInterpTime, LookUpEaseCurve));
         Rotation = rotation;
+        _lastMousePos = GetViewport().GetMousePosition();
+    }
+
+    public override void _Input(InputEvent @event)
+    {
+        if (@event is InputEventMouseButton { ButtonIndex: MouseButton.Right } buttonEvent)
+        {
+            _isRotatingCamera = buttonEvent.Pressed;
+        }
+        else if (@event is InputEventMouseMotion motionEvent)
+        {
+            if (_isRotatingCamera)
+            {
+                var mouseDeltaPos = GetViewport().GetMousePosition() - _lastMousePos;
+                FollowAngle += mouseDeltaPos.X * MouseSensitivity * (float)GetProcessDeltaTime();
+                Input.MouseMode = Input.MouseModeEnum.Captured;
+            }
+            else
+            {
+                Input.MouseMode = Input.MouseModeEnum.Visible;
+            }
+        }
     }
 }
