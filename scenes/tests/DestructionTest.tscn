@@ -1,9 +1,10 @@
-[gd_scene load_steps=8 format=3 uid="uid://rj7mcj6b07bd"]
+[gd_scene load_steps=9 format=3 uid="uid://rj7mcj6b07bd"]
 
 [ext_resource type="PackedScene" uid="uid://c0rja1bxnd05w" path="res://scenes/WorldSettings.tscn" id="1_7x6kk"]
 [ext_resource type="Script" uid="uid://mjq6l7p4j6p7" path="res://scripts/DestructibleBody3D.cs" id="2_s2uhx"]
 [ext_resource type="PackedScene" uid="uid://iwwllss8preh" path="res://scenes/Car.tscn" id="3_quayw"]
 [ext_resource type="ArrayMesh" uid="uid://eft7d0rkc1hf" path="res://scenes/tests/cube.obj" id="3_s2uhx"]
+[ext_resource type="Script" uid="uid://c6jwrprdeyw56" path="res://scripts/Camera/FollowCam.cs" id="5_q3wte"]
 
 [sub_resource type="WorldBoundaryShape3D" id="WorldBoundaryShape3D_s2uhx"]
 
@@ -195,5 +196,10 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -17.0059, 73.4201, -97.4516)
 Gravity = 20.0
 DestructionVelocity = 10.0
 
-[node name="Camera3D" type="Camera3D" parent="Car"]
-transform = Transform3D(1, 0, 0, 0, 0.989952, 0.141402, 0, -0.141402, 0.989952, 0, 6.83928, 9.84858)
+[node name="FollowCam" type="Camera3D" parent="." node_paths=PackedStringArray("Following")]
+script = ExtResource("5_q3wte")
+Following = NodePath("../Car")
+FollowHeight = 20.0
+FollowAngle = 90.0
+FollowRadius = 40.405
+metadata/_custom_type_script = "uid://c6jwrprdeyw56"
