@@ -29,6 +29,13 @@ public static class World3DExtensions
 
         return null;
     }
+
+    public static bool DoesRayIntersect(this World3D world3D, PhysicsRayQueryParameters3D query)
+    {
+        var dss = world3D.DirectSpaceState;
+        var dict = dss.IntersectRay(query);
+        return dict.Count > 0;
+    }
 }
 
 public record RayCastResult3D(
