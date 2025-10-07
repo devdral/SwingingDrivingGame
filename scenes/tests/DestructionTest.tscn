@@ -1,10 +1,11 @@
-[gd_scene load_steps=9 format=3 uid="uid://rj7mcj6b07bd"]
+[gd_scene load_steps=10 format=3 uid="uid://rj7mcj6b07bd"]
 
 [ext_resource type="PackedScene" uid="uid://c0rja1bxnd05w" path="res://scenes/WorldSettings.tscn" id="1_7x6kk"]
 [ext_resource type="Script" uid="uid://mjq6l7p4j6p7" path="res://scripts/DestructibleBody3D.cs" id="2_s2uhx"]
 [ext_resource type="PackedScene" uid="uid://iwwllss8preh" path="res://scenes/Car.tscn" id="3_quayw"]
 [ext_resource type="ArrayMesh" uid="uid://eft7d0rkc1hf" path="res://scenes/tests/cube.obj" id="3_s2uhx"]
 [ext_resource type="Script" uid="uid://c6jwrprdeyw56" path="res://scripts/Camera/FollowCam.cs" id="5_q3wte"]
+[ext_resource type="PackedScene" uid="uid://2rhd1x8y5jl3" path="res://scenes/RopeAvailablePopup.tscn" id="6_7j1qi"]
 
 [sub_resource type="WorldBoundaryShape3D" id="WorldBoundaryShape3D_s2uhx"]
 
@@ -29,168 +30,6 @@ surface_material_override/0 = SubResource("StandardMaterial3D_s2uhx")
 
 [node name="WorldSettings" parent="." instance=ExtResource("1_7x6kk")]
 
-[node name="DestructibleBody3D" type="Node3D" parent="."]
-transform = Transform3D(3.14232, 0, 0, 0, 6.20743, 0, 0, 0, 2.80473, 0, 6.15774, 0)
-script = ExtResource("2_s2uhx")
-Mesh = ExtResource("3_s2uhx")
-metadata/_custom_type_script = "uid://mjq6l7p4j6p7"
-
-[node name="DestructibleBody3D7" type="Node3D" parent="."]
-transform = Transform3D(3.14232, 0, 0, 0, 6.20743, 0, 0, 0, 2.80473, 6.40097, 6.15774, -46.8399)
-script = ExtResource("2_s2uhx")
-Mesh = ExtResource("3_s2uhx")
-metadata/_custom_type_script = "uid://mjq6l7p4j6p7"
-
-[node name="DestructibleBody3D8" type="Node3D" parent="."]
-transform = Transform3D(3.14232, 0, 0, 0, 6.20743, 0, 0, 0, 2.80473, 17.3222, 6.15774, -13.8948)
-script = ExtResource("2_s2uhx")
-Mesh = ExtResource("3_s2uhx")
-metadata/_custom_type_script = "uid://mjq6l7p4j6p7"
-
-[node name="DestructibleBody3D9" type="Node3D" parent="."]
-transform = Transform3D(3.14232, 0, 0, 0, 6.20743, 0, 0, 0, 2.80473, -30.5565, 6.15774, -71.0919)
-script = ExtResource("2_s2uhx")
-Mesh = ExtResource("3_s2uhx")
-metadata/_custom_type_script = "uid://mjq6l7p4j6p7"
-
-[node name="DestructibleBody3D10" type="Node3D" parent="."]
-transform = Transform3D(3.14232, 0, 0, 0, 6.20743, 0, 0, 0, 2.80473, 15.9282, 6.15774, -71.2576)
-script = ExtResource("2_s2uhx")
-Mesh = ExtResource("3_s2uhx")
-metadata/_custom_type_script = "uid://mjq6l7p4j6p7"
-
-[node name="DestructibleBody3D11" type="Node3D" parent="."]
-transform = Transform3D(3.14232, 0, 0, 0, 6.20743, 0, 0, 0, 2.80473, 41.4482, 6.15773, -57.6218)
-script = ExtResource("2_s2uhx")
-Mesh = ExtResource("3_s2uhx")
-metadata/_custom_type_script = "uid://mjq6l7p4j6p7"
-
-[node name="DestructibleBody3D12" type="Node3D" parent="."]
-transform = Transform3D(3.14232, 0, 0, 0, 6.20743, 0, 0, 0, 2.80473, 24.4214, 6.15773, 26.2453)
-script = ExtResource("2_s2uhx")
-Mesh = ExtResource("3_s2uhx")
-metadata/_custom_type_script = "uid://mjq6l7p4j6p7"
-
-[node name="DestructibleBody3D13" type="Node3D" parent="."]
-transform = Transform3D(3.14232, 0, 0, 0, 6.20743, 0, 0, 0, 2.80473, 26.7422, 5.33618, 47.1802)
-script = ExtResource("2_s2uhx")
-Mesh = ExtResource("3_s2uhx")
-metadata/_custom_type_script = "uid://mjq6l7p4j6p7"
-
-[node name="DestructibleBody3D14" type="Node3D" parent="."]
-transform = Transform3D(3.14232, 0, 0, 0, 6.20743, 0, 0, 0, 2.80473, 50.5668, 5.33618, 39.3877)
-script = ExtResource("2_s2uhx")
-Mesh = ExtResource("3_s2uhx")
-metadata/_custom_type_script = "uid://mjq6l7p4j6p7"
-
-[node name="DestructibleBody3D15" type="Node3D" parent="."]
-transform = Transform3D(3.14232, 0, 0, 0, 6.20743, 0, 0, 0, 2.80473, 90.4631, 5.33618, 1.34644)
-script = ExtResource("2_s2uhx")
-Mesh = ExtResource("3_s2uhx")
-metadata/_custom_type_script = "uid://mjq6l7p4j6p7"
-
-[node name="DestructibleBody3D16" type="Node3D" parent="."]
-transform = Transform3D(3.14232, 0, 0, 0, 6.20743, 0, 0, 0, 2.80473, 63.4693, 5.33618, 25.0001)
-script = ExtResource("2_s2uhx")
-Mesh = ExtResource("3_s2uhx")
-metadata/_custom_type_script = "uid://mjq6l7p4j6p7"
-
-[node name="DestructibleBody3D17" type="Node3D" parent="."]
-transform = Transform3D(3.14232, 0, 0, 0, 6.20743, 0, 0, 0, 2.80473, 52.5632, 5.33618, -9.71555)
-script = ExtResource("2_s2uhx")
-Mesh = ExtResource("3_s2uhx")
-metadata/_custom_type_script = "uid://mjq6l7p4j6p7"
-
-[node name="DestructibleBody3D18" type="Node3D" parent="."]
-transform = Transform3D(3.14232, 0, 0, 0, 6.20743, 0, 0, 0, 2.80473, 75.2508, 5.33618, -58.4067)
-script = ExtResource("2_s2uhx")
-Mesh = ExtResource("3_s2uhx")
-metadata/_custom_type_script = "uid://mjq6l7p4j6p7"
-
-[node name="DestructibleBody3D19" type="Node3D" parent="."]
-transform = Transform3D(3.14232, 0, 0, 0, 6.20743, 0, 0, 0, 2.80473, 76.0052, 5.33618, -30.2467)
-script = ExtResource("2_s2uhx")
-Mesh = ExtResource("3_s2uhx")
-metadata/_custom_type_script = "uid://mjq6l7p4j6p7"
-
-[node name="DestructibleBody3D20" type="Node3D" parent="."]
-transform = Transform3D(3.14232, 0, 0, 0, 6.20743, 0, 0, 0, 2.80473, 50.1177, 5.33618, -72.967)
-script = ExtResource("2_s2uhx")
-Mesh = ExtResource("3_s2uhx")
-metadata/_custom_type_script = "uid://mjq6l7p4j6p7"
-
-[node name="DestructibleBody3D2" type="Node3D" parent="."]
-transform = Transform3D(3.14232, 0, 0, 0, 6.20743, 0, 0, 0, 2.80473, 19.1242, 6.15774, 12.1162)
-script = ExtResource("2_s2uhx")
-Mesh = ExtResource("3_s2uhx")
-metadata/_custom_type_script = "uid://mjq6l7p4j6p7"
-
-[node name="DestructibleBody3D3" type="Node3D" parent="."]
-transform = Transform3D(3.14232, 0, 0, 0, 6.20743, 0, 0, 0, 2.80473, 34, 6.15774, -29.3037)
-script = ExtResource("2_s2uhx")
-Mesh = ExtResource("3_s2uhx")
-metadata/_custom_type_script = "uid://mjq6l7p4j6p7"
-
-[node name="DestructibleBody3D4" type="Node3D" parent="."]
-transform = Transform3D(22.5571, 0, 0, 0, 44.5599, 0, 0, 0, 20.1337, -59.9724, 31.0081, -15.5635)
-script = ExtResource("2_s2uhx")
-Mesh = ExtResource("3_s2uhx")
-metadata/_custom_type_script = "uid://mjq6l7p4j6p7"
-
-[node name="DestructibleBody3D5" type="Node3D" parent="."]
-transform = Transform3D(22.5571, 0, 0, 0, 44.5599, 0, 0, 0, 20.1337, -103.872, 28.0526, 50.6032)
-script = ExtResource("2_s2uhx")
-Mesh = ExtResource("3_s2uhx")
-metadata/_custom_type_script = "uid://mjq6l7p4j6p7"
-
-[node name="DestructibleBody3D6" type="Node3D" parent="."]
-transform = Transform3D(22.5571, 0, 0, 0, 44.5599, 0, 0, 0, 20.1337, -22.5572, 28.0526, 50.6032)
-script = ExtResource("2_s2uhx")
-Mesh = ExtResource("3_s2uhx")
-metadata/_custom_type_script = "uid://mjq6l7p4j6p7"
-
-[node name="DestructibleBody3D21" type="Node3D" parent="."]
-transform = Transform3D(22.5571, 0, 0, 0, 44.5599, 0, 0, 0, 20.1337, 32.7857, 28.0526, 91.0928)
-script = ExtResource("2_s2uhx")
-Mesh = ExtResource("3_s2uhx")
-metadata/_custom_type_script = "uid://mjq6l7p4j6p7"
-
-[node name="DestructibleBody3D22" type="Node3D" parent="."]
-transform = Transform3D(22.5571, 0, 0, 0, 44.5599, 0, 0, 0, 20.1337, 95.8607, 28.0526, 50.5047)
-script = ExtResource("2_s2uhx")
-Mesh = ExtResource("3_s2uhx")
-metadata/_custom_type_script = "uid://mjq6l7p4j6p7"
-
-[node name="DestructibleBody3D23" type="Node3D" parent="."]
-transform = Transform3D(22.5571, 0, 0, 0, 44.5599, 0, 0, 0, 20.1337, 131.816, 28.0526, -34.1876)
-script = ExtResource("2_s2uhx")
-Mesh = ExtResource("3_s2uhx")
-metadata/_custom_type_script = "uid://mjq6l7p4j6p7"
-
-[node name="DestructibleBody3D24" type="Node3D" parent="."]
-transform = Transform3D(22.5571, 0, 0, 0, 44.5599, 0, 0, 0, 20.1337, 84.7847, 28.0526, -108.228)
-script = ExtResource("2_s2uhx")
-Mesh = ExtResource("3_s2uhx")
-metadata/_custom_type_script = "uid://mjq6l7p4j6p7"
-
-[node name="DestructibleBody3D25" type="Node3D" parent="."]
-transform = Transform3D(22.5571, 0, 0, 0, 44.5599, 0, 0, 0, 20.1337, -29.0239, 28.0526, -112.516)
-script = ExtResource("2_s2uhx")
-Mesh = ExtResource("3_s2uhx")
-metadata/_custom_type_script = "uid://mjq6l7p4j6p7"
-
-[node name="DestructibleBody3D26" type="Node3D" parent="."]
-transform = Transform3D(22.5571, 0, 0, 0, 44.5599, 0, 0, 0, 20.1337, 31.4171, 28.0526, -164.268)
-script = ExtResource("2_s2uhx")
-Mesh = ExtResource("3_s2uhx")
-metadata/_custom_type_script = "uid://mjq6l7p4j6p7"
-
-[node name="DestructibleBody3D27" type="Node3D" parent="."]
-transform = Transform3D(22.5571, 0, 0, 0, 44.5599, 0, 0, 0, 20.1337, -90.3035, 28.0526, -99.0598)
-script = ExtResource("2_s2uhx")
-Mesh = ExtResource("3_s2uhx")
-metadata/_custom_type_script = "uid://mjq6l7p4j6p7"
-
 [node name="Car" parent="." instance=ExtResource("3_quayw")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -17.0059, 73.4201, -97.4516)
 Gravity = 20.0
@@ -203,3 +42,202 @@ FollowHeight = 20.0
 FollowAngle = 90.0
 FollowRadius = 40.405
 metadata/_custom_type_script = "uid://c6jwrprdeyw56"
+
+[node name="Buildings" type="Node" parent="."]
+
+[node name="Building1" type="Node3D" parent="Buildings"]
+transform = Transform3D(3.14232, 0, 0, 0, 6.20743, 0, 0, 0, 2.80473, 0, 6.15774, 0)
+script = ExtResource("2_s2uhx")
+Mesh = ExtResource("3_s2uhx")
+FragmentLifetime = 6.0
+metadata/_custom_type_script = "uid://mjq6l7p4j6p7"
+
+[node name="Building2" type="Node3D" parent="Buildings"]
+transform = Transform3D(3.14232, 0, 0, 0, 6.20743, 0, 0, 0, 2.80473, 6.40097, 6.15774, -46.8399)
+script = ExtResource("2_s2uhx")
+Mesh = ExtResource("3_s2uhx")
+FragmentLifetime = 6.0
+metadata/_custom_type_script = "uid://mjq6l7p4j6p7"
+
+[node name="Building3" type="Node3D" parent="Buildings"]
+transform = Transform3D(3.14232, 0, 0, 0, 6.20743, 0, 0, 0, 2.80473, 17.3222, 6.15774, -13.8948)
+script = ExtResource("2_s2uhx")
+Mesh = ExtResource("3_s2uhx")
+FragmentLifetime = 6.0
+metadata/_custom_type_script = "uid://mjq6l7p4j6p7"
+
+[node name="Building4" type="Node3D" parent="Buildings"]
+transform = Transform3D(3.14232, 0, 0, 0, 6.20743, 0, 0, 0, 2.80473, -30.5565, 6.15774, -71.0919)
+script = ExtResource("2_s2uhx")
+Mesh = ExtResource("3_s2uhx")
+FragmentLifetime = 6.0
+metadata/_custom_type_script = "uid://mjq6l7p4j6p7"
+
+[node name="Building5" type="Node3D" parent="Buildings"]
+transform = Transform3D(3.14232, 0, 0, 0, 6.20743, 0, 0, 0, 2.80473, 15.9282, 6.15774, -71.2576)
+script = ExtResource("2_s2uhx")
+Mesh = ExtResource("3_s2uhx")
+FragmentLifetime = 6.0
+metadata/_custom_type_script = "uid://mjq6l7p4j6p7"
+
+[node name="Building6" type="Node3D" parent="Buildings"]
+transform = Transform3D(3.14232, 0, 0, 0, 6.20743, 0, 0, 0, 2.80473, 41.4482, 6.15773, -57.6218)
+script = ExtResource("2_s2uhx")
+Mesh = ExtResource("3_s2uhx")
+FragmentLifetime = 6.0
+metadata/_custom_type_script = "uid://mjq6l7p4j6p7"
+
+[node name="Building7" type="Node3D" parent="Buildings"]
+transform = Transform3D(3.14232, 0, 0, 0, 6.20743, 0, 0, 0, 2.80473, 24.4214, 6.15773, 26.2453)
+script = ExtResource("2_s2uhx")
+Mesh = ExtResource("3_s2uhx")
+FragmentLifetime = 6.0
+metadata/_custom_type_script = "uid://mjq6l7p4j6p7"
+
+[node name="Building8" type="Node3D" parent="Buildings"]
+transform = Transform3D(3.14232, 0, 0, 0, 6.20743, 0, 0, 0, 2.80473, 26.7422, 5.33618, 47.1802)
+script = ExtResource("2_s2uhx")
+Mesh = ExtResource("3_s2uhx")
+FragmentLifetime = 6.0
+metadata/_custom_type_script = "uid://mjq6l7p4j6p7"
+
+[node name="Building9" type="Node3D" parent="Buildings"]
+transform = Transform3D(3.14232, 0, 0, 0, 6.20743, 0, 0, 0, 2.80473, 50.5668, 5.33618, 39.3877)
+script = ExtResource("2_s2uhx")
+Mesh = ExtResource("3_s2uhx")
+FragmentLifetime = 6.0
+metadata/_custom_type_script = "uid://mjq6l7p4j6p7"
+
+[node name="Building10" type="Node3D" parent="Buildings"]
+transform = Transform3D(3.14232, 0, 0, 0, 6.20743, 0, 0, 0, 2.80473, 90.4631, 5.33618, 1.34644)
+script = ExtResource("2_s2uhx")
+Mesh = ExtResource("3_s2uhx")
+FragmentLifetime = 6.0
+metadata/_custom_type_script = "uid://mjq6l7p4j6p7"
+
+[node name="Building11" type="Node3D" parent="Buildings"]
+transform = Transform3D(3.14232, 0, 0, 0, 6.20743, 0, 0, 0, 2.80473, 63.4693, 5.33618, 25.0001)
+script = ExtResource("2_s2uhx")
+Mesh = ExtResource("3_s2uhx")
+FragmentLifetime = 6.0
+metadata/_custom_type_script = "uid://mjq6l7p4j6p7"
+
+[node name="Building12" type="Node3D" parent="Buildings"]
+transform = Transform3D(3.14232, 0, 0, 0, 6.20743, 0, 0, 0, 2.80473, 52.5632, 5.33618, -9.71555)
+script = ExtResource("2_s2uhx")
+Mesh = ExtResource("3_s2uhx")
+FragmentLifetime = 6.0
+metadata/_custom_type_script = "uid://mjq6l7p4j6p7"
+
+[node name="Building13" type="Node3D" parent="Buildings"]
+transform = Transform3D(3.14232, 0, 0, 0, 6.20743, 0, 0, 0, 2.80473, 75.2508, 5.33618, -58.4067)
+script = ExtResource("2_s2uhx")
+Mesh = ExtResource("3_s2uhx")
+FragmentLifetime = 6.0
+metadata/_custom_type_script = "uid://mjq6l7p4j6p7"
+
+[node name="Building14" type="Node3D" parent="Buildings"]
+transform = Transform3D(3.14232, 0, 0, 0, 6.20743, 0, 0, 0, 2.80473, 76.0052, 5.33618, -30.2467)
+script = ExtResource("2_s2uhx")
+Mesh = ExtResource("3_s2uhx")
+FragmentLifetime = 6.0
+metadata/_custom_type_script = "uid://mjq6l7p4j6p7"
+
+[node name="Building15" type="Node3D" parent="Buildings"]
+transform = Transform3D(3.14232, 0, 0, 0, 6.20743, 0, 0, 0, 2.80473, 50.1177, 5.33618, -72.967)
+script = ExtResource("2_s2uhx")
+Mesh = ExtResource("3_s2uhx")
+FragmentLifetime = 6.0
+metadata/_custom_type_script = "uid://mjq6l7p4j6p7"
+
+[node name="Building16" type="Node3D" parent="Buildings"]
+transform = Transform3D(3.14232, 0, 0, 0, 6.20743, 0, 0, 0, 2.80473, 19.1242, 6.15774, 12.1162)
+script = ExtResource("2_s2uhx")
+Mesh = ExtResource("3_s2uhx")
+FragmentLifetime = 6.0
+metadata/_custom_type_script = "uid://mjq6l7p4j6p7"
+
+[node name="Building17" type="Node3D" parent="Buildings"]
+transform = Transform3D(3.14232, 0, 0, 0, 6.20743, 0, 0, 0, 2.80473, 34, 6.15774, -29.3037)
+script = ExtResource("2_s2uhx")
+Mesh = ExtResource("3_s2uhx")
+FragmentLifetime = 6.0
+metadata/_custom_type_script = "uid://mjq6l7p4j6p7"
+
+[node name="Building18" type="Node3D" parent="Buildings"]
+transform = Transform3D(22.5571, 0, 0, 0, 44.5599, 0, 0, 0, 20.1337, -59.9724, 31.0081, -15.5635)
+script = ExtResource("2_s2uhx")
+Mesh = ExtResource("3_s2uhx")
+FragmentLifetime = 6.0
+metadata/_custom_type_script = "uid://mjq6l7p4j6p7"
+
+[node name="Building19" type="Node3D" parent="Buildings"]
+transform = Transform3D(22.5571, 0, 0, 0, 44.5599, 0, 0, 0, 20.1337, -103.872, 28.0526, 50.6032)
+script = ExtResource("2_s2uhx")
+Mesh = ExtResource("3_s2uhx")
+FragmentLifetime = 6.0
+metadata/_custom_type_script = "uid://mjq6l7p4j6p7"
+
+[node name="Building20" type="Node3D" parent="Buildings"]
+transform = Transform3D(22.5571, 0, 0, 0, 44.5599, 0, 0, 0, 20.1337, -22.5572, 28.0526, 50.6032)
+script = ExtResource("2_s2uhx")
+Mesh = ExtResource("3_s2uhx")
+FragmentLifetime = 6.0
+metadata/_custom_type_script = "uid://mjq6l7p4j6p7"
+
+[node name="Building21" type="Node3D" parent="Buildings"]
+transform = Transform3D(22.5571, 0, 0, 0, 44.5599, 0, 0, 0, 20.1337, 32.7857, 28.0526, 91.0928)
+script = ExtResource("2_s2uhx")
+Mesh = ExtResource("3_s2uhx")
+FragmentLifetime = 6.0
+metadata/_custom_type_script = "uid://mjq6l7p4j6p7"
+
+[node name="Building22" type="Node3D" parent="Buildings"]
+transform = Transform3D(22.5571, 0, 0, 0, 44.5599, 0, 0, 0, 20.1337, 95.8607, 28.0526, 50.5047)
+script = ExtResource("2_s2uhx")
+Mesh = ExtResource("3_s2uhx")
+FragmentLifetime = 6.0
+metadata/_custom_type_script = "uid://mjq6l7p4j6p7"
+
+[node name="Building23" type="Node3D" parent="Buildings"]
+transform = Transform3D(22.5571, 0, 0, 0, 44.5599, 0, 0, 0, 20.1337, 131.816, 28.0526, -34.1876)
+script = ExtResource("2_s2uhx")
+Mesh = ExtResource("3_s2uhx")
+FragmentLifetime = 6.0
+metadata/_custom_type_script = "uid://mjq6l7p4j6p7"
+
+[node name="Building24" type="Node3D" parent="Buildings"]
+transform = Transform3D(22.5571, 0, 0, 0, 44.5599, 0, 0, 0, 20.1337, 84.7847, 28.0526, -108.228)
+script = ExtResource("2_s2uhx")
+Mesh = ExtResource("3_s2uhx")
+FragmentLifetime = 6.0
+metadata/_custom_type_script = "uid://mjq6l7p4j6p7"
+
+[node name="Building25" type="Node3D" parent="Buildings"]
+transform = Transform3D(22.5571, 0, 0, 0, 44.5599, 0, 0, 0, 20.1337, -29.0239, 28.0526, -112.516)
+script = ExtResource("2_s2uhx")
+Mesh = ExtResource("3_s2uhx")
+FragmentLifetime = 6.0
+metadata/_custom_type_script = "uid://mjq6l7p4j6p7"
+
+[node name="Building26" type="Node3D" parent="Buildings"]
+transform = Transform3D(22.5571, 0, 0, 0, 44.5599, 0, 0, 0, 20.1337, 31.4171, 28.0526, -164.268)
+script = ExtResource("2_s2uhx")
+Mesh = ExtResource("3_s2uhx")
+FragmentLifetime = 6.0
+metadata/_custom_type_script = "uid://mjq6l7p4j6p7"
+
+[node name="Building27" type="Node3D" parent="Buildings"]
+transform = Transform3D(22.5571, 0, 0, 0, 44.5599, 0, 0, 0, 20.1337, -90.3035, 28.0526, -99.0598)
+script = ExtResource("2_s2uhx")
+Mesh = ExtResource("3_s2uhx")
+FragmentLifetime = 6.0
+metadata/_custom_type_script = "uid://mjq6l7p4j6p7"
+
+[node name="HeadsUpDisplay" type="CanvasLayer" parent="."]
+
+[node name="RopeAvailablePopup" parent="HeadsUpDisplay" instance=ExtResource("6_7j1qi")]
+visible = false
+
+[connection signal="RopeAvailable" from="Car" to="HeadsUpDisplay/RopeAvailablePopup" method="OnRopeAvailable"]
+[connection signal="RopeUnavailable" from="Car" to="HeadsUpDisplay/RopeAvailablePopup" method="OnRopeUnavailable"]

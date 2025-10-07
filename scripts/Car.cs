@@ -1,10 +1,14 @@
 using Godot;
 using System;
+using SwingingDrivingGame.Utility;
 
 namespace SwingingDrivingGame;
 
 public partial class Car : CharacterBody3D
 {
+    [Signal] public delegate void RopeAvailableEventHandler();
+    [Signal] public delegate void RopeUnavailableEventHandler();
+    
     [ExportGroup("Movement")]
     [Export] public float Gravity { get; set; } = 750;
     [Export] public float Speed { get; set; } = 1000;
@@ -28,7 +32,8 @@ public partial class Car : CharacterBody3D
     
     private RopeManager _ropeManager;
     private ShapeCast3D _nearestSurfaceFinder;
-    
+    private bool _ropeAvailable;
+
     public float CurrentSpeed => _currentSpeed;
 
     public override void _Ready()
@@ -44,22 +49,6 @@ public partial class Car : CharacterBody3D
 
     public override void _PhysicsProcess(double delta)
     {
-        if (Input.IsActionJustPressed("toggle_rope"))
-        {
-            if (!_ropeManager.IsUsingRope)
-            {
-                _nearestSurfaceFinder.ForceShapecastUpdate();
-                if (_nearestSurfaceFinder.GetCollisionCount() > 0)
-                {
-                    var point = _nearestSurfaceFinder.GetCollisionPoint(0);
-                    _ropeManager.EnableRope(point);
-                }
-            }
-            else
-            {
-                _ropeManager.DisableRope();
-            }
-        }
 
         Vector3 rot = Rotation;
 
@@ -213,6 +202,34 @@ public partial class Car : CharacterBody3D
         if (Input.IsActionJustPressed("respawn"))
         {
             Position = _spawnPoint;
+        }
+        _nearestSurfaceFinder.ForceShapecastUpdate();
+        if (_nearestSurfaceFinder.GetCollisionCount() > 0)
+        {
+            EmitSignalRopeAvailable();
+            _ropeAvailable = true;
+        }
+        else
+        {
+            EmitSignalRopeUnavailable();
+            _ropeAvailable = false;
+        }
+
+        // Basis.Z is the direction the Transform3D is facing.
+        if (Input.IsActionJustPressed("toggle_rope"))
+        {
+            if (!_ropeManager.IsUsingRope)
+            {
+                if (_ropeAvailable)
+                {
+                    var point = _nearestSurfaceFinder.GetCollisionPoint(0);
+                    _ropeManager.EnableRope(point);   
+                }
+            }
+            else
+            {
+                _ropeManager.DisableRope();
+            }
         }
     }
 }
